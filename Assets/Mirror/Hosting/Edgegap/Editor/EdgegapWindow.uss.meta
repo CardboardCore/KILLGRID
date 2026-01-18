@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 5b9b90814af3f7e4c9c9b25343151c83
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 12385, guid: 0000000000000000e000000000000000, type: 0}
+  disableValidation: 0
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 96.0.1
+  assetPath: Assets/Mirror/Hosting/Edgegap/Editor/EdgegapWindow.uss
+  uploadId: 736421

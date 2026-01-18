@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 88a2b5b11b4ede646b55f4678bd73eaf
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 96.0.1
+  assetPath: Assets/Mirror/Hosting/Edgegap/LICENSE.md
+  uploadId: 736421

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: cd761f063e042f04a962ce1a262437e4
+timeCreated: 1701785025
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 96.0.1
+  assetPath: Assets/Mirror/Hosting/Edgegap/Dependencies/HttpUtility.cs
+  uploadId: 736421

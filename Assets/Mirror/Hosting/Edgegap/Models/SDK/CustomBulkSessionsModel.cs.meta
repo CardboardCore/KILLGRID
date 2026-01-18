@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f9ca793b0d3f96c42ba45528ae4a4cd4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 96.0.1
+  assetPath: Assets/Mirror/Hosting/Edgegap/Models/SDK/CustomBulkSessionsModel.cs
+  uploadId: 736421

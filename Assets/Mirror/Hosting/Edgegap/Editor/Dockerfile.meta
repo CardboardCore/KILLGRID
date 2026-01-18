@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b594378fe69b6ab4a955c307c4326cbd
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 96.0.1
+  assetPath: Assets/Mirror/Hosting/Edgegap/Editor/Dockerfile
+  uploadId: 736421

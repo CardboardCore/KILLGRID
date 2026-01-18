@@ -1,0 +1,16 @@
+{
+    "name": "Attic.Cameras",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ba467fba546d13446bde5e28c48dc40f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

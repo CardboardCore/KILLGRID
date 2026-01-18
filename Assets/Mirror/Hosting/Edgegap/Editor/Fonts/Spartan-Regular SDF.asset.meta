@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a576518d5d5ea744fa4cebf446cedd02
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 96.0.1
+  assetPath: Assets/Mirror/Hosting/Edgegap/Editor/Fonts/Spartan-Regular SDF.asset
+  uploadId: 736421

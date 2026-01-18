@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b2a81b4fc8fd1ba4fb1c5061a99b1fc7
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 96.0.1
+  assetPath: Assets/Mirror/Hosting/Edgegap/package.json
+  uploadId: 736421

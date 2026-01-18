@@ -1,0 +1,12 @@
+{
+  "name": "com.cardboardcore.virtualcameras",
+  "version": "1.0.4",
+  "displayName": "CardboardCore - Virtual Cameras",
+  "description": "Highly modifyable camera package. By re-usable modules to customize your camera's behaviour and transition between Virtual Cameras",
+  "unity": "2019.1",
+  "unityRelease": "0b5",
+  "author": {
+    "name": "Nils Rietveld",
+    "email": "its.just.nils@gmail.com"
+  }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Attic.StateMachine",
+    "rootNamespace": "",
+    "references": [
+        "Attic.DI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
