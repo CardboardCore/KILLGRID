@@ -12,6 +12,7 @@ namespace KILLGRID.Actors.Players
         [Inject] private InputManager inputManager;
 
         public event Action<Vector2> MousePositionEvent;
+        public event Action SelectEvent;
         public event Action CameraStepForwardEvent;
         public event Action CameraStepBackwardEvent;
 
@@ -25,8 +26,9 @@ namespace KILLGRID.Actors.Players
             }
 
             inputManager.Player.MousePosition.performed += OnMousePositionPerformed;
-            inputManager.Player.CameraStepForward.performed += OnCameraStepForward;
-            inputManager.Player.CameraStepBackward.performed += OnCameraStepBackward;
+            inputManager.Player.Select.performed += OnSelectPerformed;
+            inputManager.Player.CameraStepForward.performed += OnCameraStepForwardPerformed;
+            inputManager.Player.CameraStepBackward.performed += OnCameraStepBackwardPerformed;
         }
 
         protected override void OnReleased()
@@ -34,8 +36,9 @@ namespace KILLGRID.Actors.Players
             if (isLocalPlayer)
             {
                 inputManager.Player.MousePosition.performed -= OnMousePositionPerformed;
-                inputManager.Player.CameraStepForward.performed -= OnCameraStepForward;
-                inputManager.Player.CameraStepBackward.performed -= OnCameraStepBackward;
+                inputManager.Player.Select.performed -= OnSelectPerformed;
+                inputManager.Player.CameraStepForward.performed -= OnCameraStepForwardPerformed;
+                inputManager.Player.CameraStepBackward.performed -= OnCameraStepBackwardPerformed;
             }
 
             base.OnReleased();
@@ -47,12 +50,17 @@ namespace KILLGRID.Actors.Players
             MousePositionEvent?.Invoke(mousePosition);
         }
 
-        private void OnCameraStepForward(InputAction.CallbackContext context)
+        private void OnSelectPerformed(InputAction.CallbackContext context)
+        {
+            SelectEvent?.Invoke();
+        }
+
+        private void OnCameraStepForwardPerformed(InputAction.CallbackContext context)
         {
             CameraStepForwardEvent?.Invoke();
         }
 
-        private void OnCameraStepBackward(InputAction.CallbackContext context)
+        private void OnCameraStepBackwardPerformed(InputAction.CallbackContext context)
         {
             CameraStepBackwardEvent?.Invoke();
         }

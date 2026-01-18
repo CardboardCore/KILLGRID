@@ -3,6 +3,7 @@ using Attic.DI;
 using KILLGRID.Input;
 using UnityEngine;
 using Attic.Mirror.Actors;
+using Mirror;
 
 namespace KILLGRID.Actors.Players
 {
@@ -18,6 +19,18 @@ namespace KILLGRID.Actors.Players
             base.OnInjected();
 
             viewObject.SetActive(!isLocalPlayer);
+        }
+
+        [TargetRpc]
+        private void Rpc_EnableInput(NetworkConnectionToClient target)
+        {
+            inputManager.Player.Enable();
+        }
+
+        [Server]
+        public void EnableInput()
+        {
+            Rpc_EnableInput(connectionToClient);
         }
     }
 }

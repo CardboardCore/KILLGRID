@@ -120,6 +120,15 @@ namespace KILLGRID.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""e70787ef-e55a-4ca9-9aaa-761c3a75eaaa"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -153,6 +162,17 @@ namespace KILLGRID.Input
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""CameraStepBackward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""da762469-0462-4925-b21c-72211841c74f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -743,6 +763,7 @@ namespace KILLGRID.Input
             m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
             m_Player_CameraStepForward = m_Player.FindAction("CameraStepForward", throwIfNotFound: true);
             m_Player_CameraStepBackward = m_Player.FindAction("CameraStepBackward", throwIfNotFound: true);
+            m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -839,6 +860,7 @@ namespace KILLGRID.Input
         private readonly InputAction m_Player_MousePosition;
         private readonly InputAction m_Player_CameraStepForward;
         private readonly InputAction m_Player_CameraStepBackward;
+        private readonly InputAction m_Player_Select;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -862,6 +884,10 @@ namespace KILLGRID.Input
             /// Provides access to the underlying input action "Player/CameraStepBackward".
             /// </summary>
             public InputAction @CameraStepBackward => m_Wrapper.m_Player_CameraStepBackward;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/Select".
+            /// </summary>
+            public InputAction @Select => m_Wrapper.m_Player_Select;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -897,6 +923,9 @@ namespace KILLGRID.Input
                 @CameraStepBackward.started += instance.OnCameraStepBackward;
                 @CameraStepBackward.performed += instance.OnCameraStepBackward;
                 @CameraStepBackward.canceled += instance.OnCameraStepBackward;
+                @Select.started += instance.OnSelect;
+                @Select.performed += instance.OnSelect;
+                @Select.canceled += instance.OnSelect;
             }
 
             /// <summary>
@@ -917,6 +946,9 @@ namespace KILLGRID.Input
                 @CameraStepBackward.started -= instance.OnCameraStepBackward;
                 @CameraStepBackward.performed -= instance.OnCameraStepBackward;
                 @CameraStepBackward.canceled -= instance.OnCameraStepBackward;
+                @Select.started -= instance.OnSelect;
+                @Select.performed -= instance.OnSelect;
+                @Select.canceled -= instance.OnSelect;
             }
 
             /// <summary>
@@ -1238,6 +1270,13 @@ namespace KILLGRID.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnCameraStepBackward(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Select" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnSelect(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

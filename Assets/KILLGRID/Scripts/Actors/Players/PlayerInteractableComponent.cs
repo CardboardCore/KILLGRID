@@ -2,6 +2,7 @@
 using Attic.DI;
 using Attic.Mirror.Actors.Components;
 using KILLGRID.Actors.Interactables;
+using Mirror;
 using UnityEngine;
 
 namespace KILLGRID.Actors.Players
@@ -12,7 +13,8 @@ namespace KILLGRID.Actors.Players
 
         [SerializeField] private PlayerInputComponent playerInputComponent;
 
-        private InteractableActor currentHighlightedInteractableActor;
+        private InteractableComponent currentHighlightedInteractableComponent;
+        private InteractableComponent currentSelectedInteractableComponent;
 
         protected override void OnInjected()
         {
@@ -23,20 +25,23 @@ namespace KILLGRID.Actors.Players
                 return;
             }
 
-            playerInputComponent.MousePositionEvent += OnMousePositionEvent;
+            playerInputComponent.MousePositionEvent += OnMousePosition;
+            playerInputComponent.SelectEvent += OnSelect;
         }
 
         protected override void OnReleased()
         {
             if (isLocalPlayer)
             {
-                playerInputComponent.MousePositionEvent -= OnMousePositionEvent;
+                playerInputComponent.MousePositionEvent -= OnMousePosition;
+                playerInputComponent.SelectEvent -= OnSelect;
             }
 
             base.OnReleased();
         }
 
-        private void OnMousePositionEvent(Vector2 mousePosition)
+        [Client]
+        private void OnMousePosition(Vector2 mousePosition)
         {
             // TODO: This only works if it's my turn
 
@@ -47,57 +52,96 @@ namespace KILLGRID.Actors.Players
 
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
             {
-                InteractableActor interactableActor = hitInfo.collider.GetComponentInParent<InteractableActor>();
+                InteractableComponent interactableComponent = hitInfo.collider.GetComponentInParent<InteractableComponent>();
 
-                if (interactableActor)
+                if (interactableComponent)
                 {
-                    if (currentHighlightedInteractableActor != interactableActor)
+                    if (currentHighlightedInteractableComponent == interactableComponent)
                     {
-                        SetHighlightedInteractable(interactableActor);
+                        return;
                     }
+
+                    if (currentHighlightedInteractableComponent)
+                    {
+                        RemoveHighlightedInteractable();
+                    }
+
+                    SetHighlightedInteractable(interactableComponent);
                 }
-                // Unhighlight previous
-                else if (currentHighlightedInteractableActor)
+                else
                 {
-                    RemoveHighlightedInteractable();
+                    // Unhighlight previous
+                    if (currentHighlightedInteractableComponent)
+                    {
+                        RemoveHighlightedInteractable();
+                    }
                 }
 
                 return;
             }
 
             // Unhighlight previous
-            if (currentHighlightedInteractableActor)
+            if (currentHighlightedInteractableComponent)
             {
                 RemoveHighlightedInteractable();
             }
         }
 
-        private void SetHighlightedInteractable(InteractableActor interactableActor)
+        [Client]
+        private void OnSelect()
         {
-            if (currentHighlightedInteractableActor != interactableActor)
+            if (!currentHighlightedInteractableComponent)
+            {
+                if (currentSelectedInteractableComponent)
+                {
+                    currentSelectedInteractableComponent.UnSelect(true);
+                }
+
+                return;
+            }
+
+            if (currentHighlightedInteractableComponent == currentSelectedInteractableComponent)
+            {
+                return;
+            }
+
+            if (currentSelectedInteractableComponent)
+            {
+                currentSelectedInteractableComponent.UnSelect(true);
+            }
+
+            currentHighlightedInteractableComponent.Select(true);
+            currentSelectedInteractableComponent = currentHighlightedInteractableComponent;
+        }
+
+        [Client]
+        private void SetHighlightedInteractable(InteractableComponent interactableComponent)
+        {
+            if (currentHighlightedInteractableComponent != interactableComponent)
             {
                 // Unhighlight previous
-                if (currentHighlightedInteractableActor)
+                if (currentHighlightedInteractableComponent)
                 {
                     RemoveHighlightedInteractable();
                 }
 
                 // Highlight new
-                if (interactableActor)
+                if (interactableComponent)
                 {
-                    interactableActor.ShowHighlight(true, true);
+                    interactableComponent.ShowHighlight(true, true);
                 }
 
-                currentHighlightedInteractableActor = interactableActor;
+                currentHighlightedInteractableComponent = interactableComponent;
             }
         }
 
+        [Client]
         private void RemoveHighlightedInteractable()
         {
-            if (currentHighlightedInteractableActor)
+            if (currentHighlightedInteractableComponent)
             {
-                currentHighlightedInteractableActor.ShowHighlight(true, false);
-                currentHighlightedInteractableActor = null;
+                currentHighlightedInteractableComponent.ShowHighlight(true, false);
+                currentHighlightedInteractableComponent = null;
             }
         }
     }

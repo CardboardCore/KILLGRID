@@ -48,10 +48,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 692507055453633080, guid: 27e0ddaae5662c94bb6e7089d7d26a92, type: 3}
-      propertyPath: rmsCount
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5527465277121703327, guid: 27e0ddaae5662c94bb6e7089d7d26a92, type: 3}
       propertyPath: m_Name
       value: FacilityButton
@@ -100,10 +96,22 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   facilitiesConfig: {fileID: 11400000, guid: 963cc6d0b06fc4c48934811bd8bfb9f2, type: 2}
+  interactableComponent: {fileID: 8183412464182841410}
   nameText: {fileID: 293002595492846543}
   costText: {fileID: 8965926270866043938}
   facilityButtonConfig:
     facilityType: 0
+--- !u!114 &8183412464182841410 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6095222363732137010, guid: 27e0ddaae5662c94bb6e7089d7d26a92, type: 3}
+  m_PrefabInstance: {fileID: 2668319237245371504}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7616227260462213615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee7f0c2ce283479295525b65c8741c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Actors.Interactables.InteractableActor
 --- !u!114 &8965926270866043938 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6443129642819399762, guid: 27e0ddaae5662c94bb6e7089d7d26a92, type: 3}

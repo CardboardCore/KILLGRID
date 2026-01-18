@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Attic.DI;
+﻿using Attic.DI;
 using Attic.Utilities;
 using Mirror;
 using KILLGRID.Actors.Players;
@@ -20,6 +19,8 @@ namespace PrisonBreak.Players
         [SerializeField] private PlayerActor playerActorTwoPrefab;
 
         private readonly SyncList<PlayerEntry> playerEntries = new SyncList<PlayerEntry>();
+
+        public int PlayerCount => playerEntries.Count;
 
         public override void OnStartServer()
         {
@@ -102,6 +103,18 @@ namespace PrisonBreak.Players
                     return;
                 }
             }
+        }
+
+        [Server]
+        public PlayerActor GetPlayer(int index)
+        {
+            if (playerEntries.Count <= index)
+            {
+                Log.Error($"Player index {index} is out of range. Total players: {playerEntries.Count}");
+                return null;
+            }
+
+            return playerEntries[index].Player;
         }
     }
 }

@@ -140,7 +140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <Facility>
+  m_text: <Name>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c39974c6ceea90f48ad0215b4609a8ba, type: 2}
   m_sharedMaterial: {fileID: 3156110466283437572, guid: c39974c6ceea90f48ad0215b4609a8ba, type: 2}
@@ -284,6 +284,8 @@ MonoBehaviour:
   syncInterval: 0
   interactableConfig:
     highlightEffect: {fileID: 692507055453633080}
+    hoverProfile: {fileID: 11400000, guid: 9fb58a8e609ad0b4f92bd5b662ced2c3, type: 2}
+    selectProfile: {fileID: 11400000, guid: 692cc1df69b352f41a781671a9872b4c, type: 2}
 --- !u!114 &692507055453633080
 MonoBehaviour:
   m_ObjectHideFlags: 0

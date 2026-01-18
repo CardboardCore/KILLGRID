@@ -1,21 +1,35 @@
 ﻿using Attic.DI;
 using Attic.StateMachines;
-using KILLGRID.Input;
+using Attic.Utils.Invoking;
+using KILLGRID.Gameplay.Turns.StateMachines;
+using Mirror;
 
 namespace KILLGRID.Gameplay.StateMachines.States
 {
     public class ActiveGameState : State
     {
-        [Inject] private InputManager inputManager;
+        [Inject] private InvokeWrapper invokeWrapper;
+
+        private TurnStateMachine turnStateMachine;
 
         protected override void OnEnter()
         {
-            inputManager.Player.Enable();
+            if (NetworkServer.active)
+            {
+                invokeWrapper.Invoke(() => {
+                    turnStateMachine = new TurnStateMachine(true);
+                    turnStateMachine.Start();
+                }, 2f);
+            }
         }
 
         protected override void OnExit()
         {
-            inputManager.Player.Disable();
+            if (turnStateMachine != null && NetworkServer.active)
+            {
+                turnStateMachine.Stop();
+                turnStateMachine = null;
+            }
         }
     }
 }
