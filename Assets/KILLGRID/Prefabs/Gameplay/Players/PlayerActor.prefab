@@ -157,6 +157,7 @@ GameObject:
   - component: {fileID: 815911237836320489}
   - component: {fileID: 6804075281722046086}
   - component: {fileID: 3338329072242222453}
+  - component: {fileID: 8947196615161704322}
   m_Layer: 0
   m_Name: PlayerActor
   m_TagString: Untagged
@@ -249,3 +250,19 @@ MonoBehaviour:
     - cameraId: Default
     - cameraId: CheckButtons
     - cameraId: CheckBoard
+--- !u!114 &8947196615161704322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786128614114064540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fddc787cade4c2897897cef9f053fbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Actors.Players.PlayerInteractableComponent
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  playerInputComponent: {fileID: 6804075281722046086}

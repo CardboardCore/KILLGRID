@@ -2,6 +2,8 @@
 using Attic.DI;
 using Attic.Mirror.Actors.Components;
 using KILLGRID.Input;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace KILLGRID.Actors.Players
 {
@@ -9,6 +11,7 @@ namespace KILLGRID.Actors.Players
     {
         [Inject] private InputManager inputManager;
 
+        public event Action<Vector2> MousePositionEvent;
         public event Action CameraStepForwardEvent;
         public event Action CameraStepBackwardEvent;
 
@@ -21,6 +24,7 @@ namespace KILLGRID.Actors.Players
                 return;
             }
 
+            inputManager.Player.MousePosition.performed += OnMousePositionPerformed;
             inputManager.Player.CameraStepForward.performed += OnCameraStepForward;
             inputManager.Player.CameraStepBackward.performed += OnCameraStepBackward;
         }
@@ -29,6 +33,7 @@ namespace KILLGRID.Actors.Players
         {
             if (isLocalPlayer)
             {
+                inputManager.Player.MousePosition.performed -= OnMousePositionPerformed;
                 inputManager.Player.CameraStepForward.performed -= OnCameraStepForward;
                 inputManager.Player.CameraStepBackward.performed -= OnCameraStepBackward;
             }
@@ -36,12 +41,18 @@ namespace KILLGRID.Actors.Players
             base.OnReleased();
         }
 
-        private void OnCameraStepForward(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        private void OnMousePositionPerformed(InputAction.CallbackContext obj)
+        {
+            Vector2 mousePosition = obj.ReadValue<Vector2>();
+            MousePositionEvent?.Invoke(mousePosition);
+        }
+
+        private void OnCameraStepForward(InputAction.CallbackContext context)
         {
             CameraStepForwardEvent?.Invoke();
         }
 
-        private void OnCameraStepBackward(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        private void OnCameraStepBackward(InputAction.CallbackContext context)
         {
             CameraStepBackwardEvent?.Invoke();
         }

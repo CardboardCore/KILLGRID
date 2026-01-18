@@ -32,8 +32,6 @@ namespace KILLGRID.Networking.Mirror
 
         protected override InjectTiming MyInjectTiming => InjectTiming.Start;
 
-        private List<string> ignoredSessionIds = new List<string>();
-
         /// <summary>
         /// Only available after when hosting a session
         /// </summary>
@@ -116,6 +114,9 @@ namespace KILLGRID.Networking.Mirror
 
             try
             {
+                string ignoredSessionIdsString = PlayerPrefs.GetString("IgnoredSessionIds", "");
+                List<string> ignoredSessionIds = new List<string>(ignoredSessionIdsString.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries));
+
                 ApiResponse data = await EdgegapRelayService.FindSessionAsync(ignoredSessionIds);
 
                 if (data == null || string.IsNullOrEmpty(data.session_id))
@@ -269,7 +270,10 @@ namespace KILLGRID.Networking.Mirror
 
         public void AddCurrentSessionIdToIgnoreList()
         {
-            ignoredSessionIds.Add(SessionId);
+            // Add to playerprefs so it persists between sessions
+            string ignoredSessionIdsString = PlayerPrefs.GetString("IgnoredSessionIds", "");
+            ignoredSessionIdsString += SessionId + ";";
+            PlayerPrefs.SetString("IgnoredSessionIds", ignoredSessionIdsString);
         }
 
         public void ClearSessionId()

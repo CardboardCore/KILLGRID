@@ -95,7 +95,7 @@ namespace KILLGRID.Input
             ""id"": ""df70fa95-8a34-4494-b137-73ab6b9c7d37"",
             ""actions"": [
                 {
-                    ""name"": ""Mouse"",
+                    ""name"": ""MousePosition"",
                     ""type"": ""Value"",
                     ""id"": ""6b444451-8a00-4d00-a97e-f47457f736a8"",
                     ""expectedControlType"": ""Vector2"",
@@ -125,34 +125,12 @@ namespace KILLGRID.Input
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""c1f7a91b-d0fd-4a62-997e-7fb9b69bf235"",
-                    ""path"": ""<Gamepad>/rightStick"",
+                    ""id"": ""f5817b81-cd72-4fda-9d23-b0b0a2493a92"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Mouse"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8c8e490b-c610-4785-884f-f04217b23ca4"",
-                    ""path"": ""<Pointer>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse;Touch"",
-                    ""action"": ""Mouse"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3e5f5442-8668-4b27-a940-df99bad7e831"",
-                    ""path"": ""<Joystick>/{Hatswitch}"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""Mouse"",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -762,7 +740,7 @@ namespace KILLGRID.Input
 }");
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-            m_Player_Mouse = m_Player.FindAction("Mouse", throwIfNotFound: true);
+            m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
             m_Player_CameraStepForward = m_Player.FindAction("CameraStepForward", throwIfNotFound: true);
             m_Player_CameraStepBackward = m_Player.FindAction("CameraStepBackward", throwIfNotFound: true);
             // UI
@@ -858,7 +836,7 @@ namespace KILLGRID.Input
         // Player
         private readonly InputActionMap m_Player;
         private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-        private readonly InputAction m_Player_Mouse;
+        private readonly InputAction m_Player_MousePosition;
         private readonly InputAction m_Player_CameraStepForward;
         private readonly InputAction m_Player_CameraStepBackward;
         /// <summary>
@@ -873,9 +851,9 @@ namespace KILLGRID.Input
             /// </summary>
             public PlayerActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
             /// <summary>
-            /// Provides access to the underlying input action "Player/Mouse".
+            /// Provides access to the underlying input action "Player/MousePosition".
             /// </summary>
-            public InputAction @Mouse => m_Wrapper.m_Player_Mouse;
+            public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
             /// <summary>
             /// Provides access to the underlying input action "Player/CameraStepForward".
             /// </summary>
@@ -910,9 +888,9 @@ namespace KILLGRID.Input
             {
                 if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-                @Mouse.started += instance.OnMouse;
-                @Mouse.performed += instance.OnMouse;
-                @Mouse.canceled += instance.OnMouse;
+                @MousePosition.started += instance.OnMousePosition;
+                @MousePosition.performed += instance.OnMousePosition;
+                @MousePosition.canceled += instance.OnMousePosition;
                 @CameraStepForward.started += instance.OnCameraStepForward;
                 @CameraStepForward.performed += instance.OnCameraStepForward;
                 @CameraStepForward.canceled += instance.OnCameraStepForward;
@@ -930,9 +908,9 @@ namespace KILLGRID.Input
             /// <seealso cref="PlayerActions" />
             private void UnregisterCallbacks(IPlayerActions instance)
             {
-                @Mouse.started -= instance.OnMouse;
-                @Mouse.performed -= instance.OnMouse;
-                @Mouse.canceled -= instance.OnMouse;
+                @MousePosition.started -= instance.OnMousePosition;
+                @MousePosition.performed -= instance.OnMousePosition;
+                @MousePosition.canceled -= instance.OnMousePosition;
                 @CameraStepForward.started -= instance.OnCameraStepForward;
                 @CameraStepForward.performed -= instance.OnCameraStepForward;
                 @CameraStepForward.canceled -= instance.OnCameraStepForward;
@@ -1240,12 +1218,12 @@ namespace KILLGRID.Input
         public interface IPlayerActions
         {
             /// <summary>
-            /// Method invoked when associated input action "Mouse" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// Method invoked when associated input action "MousePosition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnMouse(InputAction.CallbackContext context);
+            void OnMousePosition(InputAction.CallbackContext context);
             /// <summary>
             /// Method invoked when associated input action "CameraStepForward" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
