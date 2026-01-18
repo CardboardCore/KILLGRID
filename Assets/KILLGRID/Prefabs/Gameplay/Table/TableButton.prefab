@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 8335472807801212671}
   - component: {fileID: 2384430034225225663}
   m_Layer: 2
-  m_Name: FacilityNameText
+  m_Name: NameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -669,7 +669,7 @@ GameObject:
   - component: {fileID: 3707759430238026548}
   - component: {fileID: 6443129642819399762}
   m_Layer: 2
-  m_Name: AmountText
+  m_Name: CostText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

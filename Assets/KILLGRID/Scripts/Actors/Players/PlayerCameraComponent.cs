@@ -48,6 +48,8 @@ namespace KILLGRID.Actors.Players
 
             playerInputComponent.CameraStepForwardEvent += OnCameraStepForward;
             playerInputComponent.CameraStepBackwardEvent += OnCameraStepBackward;
+
+            SetCameraStep(currentStepIndex, true);
         }
 
         protected override void OnReleased()
@@ -85,12 +87,12 @@ namespace KILLGRID.Actors.Players
             SetCameraStep(currentStepIndex);
         }
 
-        private void SetCameraStep(int stepIndex)
+        private void SetCameraStep(int stepIndex, bool instant = false)
         {
             stepIndex = Mathf.Clamp(stepIndex, 0, cameraStepConfig.Steps.Length - 1);
 
             PlayerCameraStepData stepData = cameraStepConfig.Steps[stepIndex];
-            virtualCameraManager.DoTransition(stepData.CameraId, TransitionOptions.None, 0.2f);
+            virtualCameraManager.DoTransition(stepData.CameraId, instant ? TransitionOptions.Instant : TransitionOptions.None, 0.2f);
         }
     }
 }

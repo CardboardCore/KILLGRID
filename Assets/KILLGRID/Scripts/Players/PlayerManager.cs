@@ -16,7 +16,8 @@ namespace PrisonBreak.Players
     [Injectable]
     public class PlayerManager : NetworkBehaviour
     {
-        [SerializeField] private PlayerActor playerActorPrefab;
+        [SerializeField] private PlayerActor playerActorOnePrefab;
+        [SerializeField] private PlayerActor playerActorTwoPrefab;
 
         private readonly SyncList<PlayerEntry> playerEntries = new SyncList<PlayerEntry>();
 
@@ -71,8 +72,12 @@ namespace PrisonBreak.Players
         {
             Log.Write($"Spawning player for connection ID {conn.connectionId}");
 
-            PlayerActor playerActor = Instantiate(playerActorPrefab, startPoint.position, startPoint.rotation);
-            playerActor.name = $"{playerActorPrefab.name} [connId={conn.connectionId}]";
+            // TODO: This currently holds up as when the host leaves (player one), player two will get disconnected.
+            // Check if player entries [0] exists to decide if this is player one or player two
+            PlayerActor prefab = playerEntries.Count == 0 ? playerActorOnePrefab : playerActorTwoPrefab;
+
+            PlayerActor playerActor = Instantiate(prefab, startPoint.position, startPoint.rotation);
+            playerActor.name = $"{prefab.name} [connId={conn.connectionId}]";
 
             NetworkServer.AddPlayerForConnection(conn, playerActor.gameObject);
 
