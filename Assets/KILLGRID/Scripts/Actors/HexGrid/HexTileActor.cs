@@ -1,7 +1,8 @@
-﻿using Attic.DI;
-using Attic.Mirror.Actors;
+﻿using Attic.Mirror.Actors;
+using Attic.Utilities;
+using DG.Tweening;
 using KILLGRID.Actors.Interactables;
-using KILLGRID.Gameplay.BoardPlacement;
+using KILLGRID.Actors.Placeables;
 using Mirror;
 using UnityEngine;
 
@@ -9,64 +10,53 @@ namespace KILLGRID.Actors.HexGrid
 {
     public class HexTileActor : Actor
     {
-        [Inject] private BoardPlaceableManager boardPlaceableManager;
-
         [SerializeField] private InteractableComponent interactableComponent;
 
         [SyncVar] private bool isOccupied;
 
+        private PlaceableActor placedActor;
+
+        public bool IsOccupied => isOccupied;
+
         protected override void OnInjected()
         {
-            interactableComponent.HoverEnterEvent += OnHoverEnter;
-            interactableComponent.HoverExitEvent += OnHoverExit;
-
-            interactableComponent.SelectEvent += OnSelect;
+            // interactableComponent.HoverEnterEvent += OnHoverEnter;
+            // interactableComponent.HoverExitEvent += OnHoverExit;
+            //
+            // interactableComponent.SelectEvent += OnSelect;
         }
 
         protected override void OnReleased()
         {
-            interactableComponent.HoverEnterEvent -= OnHoverEnter;
-            interactableComponent.HoverExitEvent -= OnHoverExit;
-
-            interactableComponent.SelectEvent -= OnSelect;
-        }
-
-        [Client]
-        private void OnHoverEnter()
-        {
-            boardPlaceableManager.Cmd_ShowPlaceableAtTile(this);
-        }
-
-        [Client]
-        private void OnHoverExit()
-        {
-            boardPlaceableManager.Cmd_HidePlaceable();
-        }
-
-        [Client]
-        private void OnSelect()
-        {
-            if (isOccupied)
-            {
-                return;
-            }
-
-            Cmd_SetOccupied();
+            // interactableComponent.HoverEnterEvent -= OnHoverEnter;
+            // interactableComponent.HoverExitEvent -= OnHoverExit;
+            //
+            // interactableComponent.SelectEvent -= OnSelect;
         }
 
         [Command(requiresAuthority = false)]
-        private void Cmd_SetOccupied()
+        private void Cmd_PlaceActor(PlaceableActor placeableActor)
         {
-            if (boardPlaceableManager.CurrentPlaceableConfig == null)
+            placedActor = placeableActor;
+            isOccupied = true;
+        }
+
+        [Client]
+        public void MoveActorToTile(Actor actor)
+        {
+            if (!actor.isOwned)
             {
+                Log.Error($"Trying to move actor {actor.name} that is not owned by this client.");
                 return;
             }
 
-            boardPlaceableManager.ClearCachedPlaceableConfig();
+            actor.transform.DOMove(transform.position, 0.3f);
+        }
 
-            interactableComponent.UnSelect(true);
-
-            isOccupied = true;
+        [Client]
+        public void RequestPlaceActor(PlaceableActor placeableActor)
+        {
+            Cmd_PlaceActor(placeableActor);
         }
     }
 }

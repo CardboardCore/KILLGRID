@@ -14,11 +14,15 @@ namespace KILLGRID.Actors.Players
 
         [SerializeField] private GameObject viewObject;
 
+        public PlayerInteractComponent PlayerInteractComponent { get; private set; }
+
         protected override void OnInjected()
         {
             base.OnInjected();
 
             viewObject.SetActive(!isLocalPlayer);
+
+            PlayerInteractComponent = GetComponent<PlayerInteractComponent>();
         }
 
         [TargetRpc]

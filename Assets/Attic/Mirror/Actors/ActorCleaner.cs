@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Attic.Mirror.Actors.Interacting;
 using Attic.DI;
 using Attic.Utilities;
 using Mirror;
@@ -7,6 +6,7 @@ using UnityEngine;
 
 namespace Attic.Mirror.Actors
 {
+    [Injectable]
     public class ActorCleaner : AtticNetworkBehaviour
     {
         private class RemovalInfo
@@ -97,19 +97,8 @@ namespace Attic.Mirror.Actors
 
             Log.Write($"Hiding actor {actor.name} as it'll be removed soon");
 
-            if (actor is InteractableActor interactableActor)
-            {
-                interactableActor.DisableInteraction();
-                interactableActor.DisableColliders();
-                interactableActor.DisableView();
-                interactableActor.SetKinematic(true);
-                interactableActor.SetPosition(new Vector3(-100, 0, 0));
-            }
-            else
-            {
-                actor.DisableView();
-                actor.transform.position = new Vector3(-100, 0, 0);
-            }
+            actor.DisableView();
+            actor.transform.position = new Vector3(-100, 0, 0);
         }
 
         /// <summary>
@@ -127,21 +116,8 @@ namespace Attic.Mirror.Actors
 
             Log.Write($"Requesting queuing actor {actor.name} for removal");
 
-            if (actor is InteractableActor interactableActor)
-            {
-                interactableActor.RequestForceStopInteract(InteractInput.Default, true);
-                interactableActor.RequestForceStopInteract(InteractInput.Alternative, true);
-                interactableActor.DisableInteraction();
-                interactableActor.DisableColliders();
-                interactableActor.DisableView();
-                interactableActor.SetKinematic(true);
-                interactableActor.SetPosition(new Vector3(-100, 0, 0));
-            }
-            else
-            {
                 actor.DisableView();
                 actor.transform.position = new Vector3(-100, 0, 0);
-            }
 
             Cmd_QueueForRemoval(actor.netId);
         }

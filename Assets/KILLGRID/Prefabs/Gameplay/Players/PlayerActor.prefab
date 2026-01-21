@@ -160,6 +160,7 @@ GameObject:
   - component: {fileID: 6804075281722046086}
   - component: {fileID: 3338329072242222453}
   - component: {fileID: 8947196615161704322}
+  - component: {fileID: 7052936541930011927}
   m_Layer: 0
   m_Name: PlayerActor
   m_TagString: Untagged
@@ -268,6 +269,21 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   playerInputComponent: {fileID: 6804075281722046086}
+--- !u!114 &7052936541930011927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786128614114064540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e78b59e059524e668b8bc1067b7f0919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Actors.Players.PlayerActionComponent
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!1 &8733461336348723314
 GameObject:
   m_ObjectHideFlags: 0

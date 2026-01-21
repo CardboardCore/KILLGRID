@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50fef6c8f014cf4a28a34ef6dc1882c, type: 3}
+  m_Name: PlaceablesConfig
+  m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Gameplay.Placeables.PlaceablesConfig
+  placeables:
+  - name: Core HQ
+    type: 0
+    cost: 0
+    placeableActorPrefab: {fileID: 1939842874171700737, guid: f964e5d4b4338ac44906b5a3aa3d8e3d, type: 3}

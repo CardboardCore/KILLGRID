@@ -85,6 +85,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   interactableConfig:
+    immediateUnselect: 1
+    interactableType: 2
     highlightEffect: {fileID: 6354282756711989947}
     hoverProfile: {fileID: 11400000, guid: 9fb58a8e609ad0b4f92bd5b662ced2c3, type: 2}
     selectProfile: {fileID: 11400000, guid: 692cc1df69b352f41a781671a9872b4c, type: 2}
