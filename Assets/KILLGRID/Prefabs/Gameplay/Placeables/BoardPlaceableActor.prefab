@@ -191,9 +191,11 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  greenHoloView: {fileID: 3330981407412380278}
-  redHoloView: {fileID: 7588043426097308}
-  normalView: {fileID: 5357711734902998845}
+  config:
+    placeableType: 0
+    greenHoloView: {fileID: 3330981407412380278}
+    redHoloView: {fileID: 7588043426097308}
+    normalView: {fileID: 5357711734902998845}
 --- !u!1 &3330981407412380278
 GameObject:
   m_ObjectHideFlags: 0

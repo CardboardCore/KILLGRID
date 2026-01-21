@@ -129,6 +129,8 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
                         hexTileActor.RequestPlaceActor(placeableActor);
 
+                        owningStateMachine.Owner.GetComponent<PlayerOwnedTilesComponent>().AddOwnedTile(hexTileActor);
+
                         placeableActor.ShowAsNormal(true);
 
                         // memoryBankComponent.Consume();

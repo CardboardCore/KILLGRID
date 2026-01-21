@@ -31,7 +31,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7698679487455245415}
+  - {fileID: 6816425745744699063}
   m_Father: {fileID: 8724570428882359225}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5531120080564717492
@@ -142,8 +144,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1070294383840546219}
-  - {fileID: 7698679487455245415}
-  - {fileID: 6816425745744699063}
   m_Father: {fileID: 6736418472327036133}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7786128614114064540
@@ -161,6 +161,8 @@ GameObject:
   - component: {fileID: 3338329072242222453}
   - component: {fileID: 8947196615161704322}
   - component: {fileID: 7052936541930011927}
+  - component: {fileID: 4386865140307655712}
+  - component: {fileID: 6146356278595585922}
   m_Layer: 0
   m_Name: PlayerActor
   m_TagString: Untagged
@@ -284,6 +286,37 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+--- !u!114 &4386865140307655712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786128614114064540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172e6a37bde440b8b2314ecbdc403074, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Actors.Players.PlayerOwnedTilesComponent
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &6146356278595585922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786128614114064540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c15970a5ed64e8b903fe3ae1b6cb88f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Actors.Players.PlayerEnergyComponent
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  playerOwnedTilesComponent: {fileID: 4386865140307655712}
 --- !u!1 &8733461336348723314
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,11 +345,11 @@ Transform:
   m_GameObject: {fileID: 8733461336348723314}
   serializedVersion: 2
   m_LocalRotation: {x: -0.70710576, y: -0, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: -0.166, y: 0.18000007, z: -0.4534}
+  m_LocalPosition: {x: -0.166, y: 0.18000007, z: -0.45339966}
   m_LocalScale: {x: 0.11107, y: 0.0070263995, z: 0.11107}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8724570428882359225}
+  m_Father: {fileID: 1070294383840546219}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &4281821949906384487
 MeshFilter:
@@ -426,11 +459,11 @@ Transform:
   m_GameObject: {fileID: 9084222080649933313}
   serializedVersion: 2
   m_LocalRotation: {x: -0.70710576, y: -0, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: 0.166, y: 0.18000007, z: -0.45339942}
+  m_LocalPosition: {x: 0.166, y: 0.18000007, z: -0.45339966}
   m_LocalScale: {x: 0.11107, y: 0.0070263995, z: 0.11107}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8724570428882359225}
+  m_Father: {fileID: 1070294383840546219}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &4579311451254726730
 MeshFilter:

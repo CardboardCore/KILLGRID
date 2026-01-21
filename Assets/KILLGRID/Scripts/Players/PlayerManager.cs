@@ -89,6 +89,8 @@ namespace PrisonBreak.Players
             };
 
             playerEntries.Add(playerEntry);
+
+            playerActor.SetPlayerIndex(playerEntries.IndexOf(playerEntry));
         }
 
         [Server]
