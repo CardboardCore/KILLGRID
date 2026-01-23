@@ -1,10 +1,13 @@
 ﻿using System;
+using Attic.DI;
 using Attic.Mirror.Actors;
 using Attic.Utilities;
 using DG.Tweening;
 using KILLGRID.Actors.Interactables;
 using KILLGRID.Actors.Placeables;
+using KILLGRID.Actors.Players;
 using Mirror;
+using PrisonBreak.Players;
 using UnityEngine;
 
 namespace KILLGRID.Actors.HexGrid
@@ -46,14 +49,18 @@ namespace KILLGRID.Actors.HexGrid
         [Header("Settings")]
         [SerializeField] private HexTileConfig config;
 
+        [SyncVar(hook = nameof(OnOwnerPlayerIndexChanged))] private int ownerPlayerIndex = -1;
         // TODO: Probably need occupied state for multiple placeable types
         [SyncVar] private bool isOccupied;
-        [SyncVar(hook = nameof(OnOwnerPlayerIndexChanged))] private int ownerPlayerIndex = -1;
+
+        [SyncVar] private int gridCoordinatesX;
+        [SyncVar] private int gridCoordinatesY;
 
         private float initialFloatY;
 
         private PlaceableActor placedActor;
 
+        public int OwnerPlayerIndex => ownerPlayerIndex;
         public bool IsOccupied => isOccupied;
 
         private void OnDrawGizmosSelected()
@@ -123,6 +130,28 @@ namespace KILLGRID.Actors.HexGrid
             meshRenderer.material = newMaterial;
         }
 
+        [Server]
+        public void SetCoordinates(int x, int y)
+        {
+            gridCoordinatesX = x;
+            gridCoordinatesY = y;
+        }
+
+        [Server]
+        public void SetOwner(int playerIndex)
+        {
+            ownerPlayerIndex = playerIndex;
+        }
+
+        [Server]
+        public void OnTurnStart()
+        {
+            if (placedActor)
+            {
+                placedActor.OnTurnStart();
+            }
+        }
+
         [Client]
         public void MoveActorToTile(Actor actor)
         {
@@ -141,24 +170,9 @@ namespace KILLGRID.Actors.HexGrid
             Cmd_PlaceActor(placeableActor);
         }
 
-        [Server]
-        public void SetOwner(int playerIndex)
-        {
-            ownerPlayerIndex = playerIndex;
-        }
-
-        [Server]
-        public void OnTurnStart()
-        {
-            if (placedActor)
-            {
-                placedActor.OnTurnStart();
-            }
-        }
-
         public (int x, int y) GetGridPosition()
         {
-
+            return new ValueTuple<int, int>(gridCoordinatesX, gridCoordinatesY);
         }
     }
 }

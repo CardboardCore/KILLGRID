@@ -9,7 +9,8 @@ namespace KILLGRID.Actors.Placeables
     {
         protected PlaceableActor Owner { get; private set; }
 
-        protected abstract void OnServerTurnStart();
+        protected abstract void OnServerPlacedInternal();
+        protected abstract void OnServerTurnStartInternal();
 
         public void Initialize(PlaceableActor owner)
         {
@@ -17,9 +18,15 @@ namespace KILLGRID.Actors.Placeables
         }
 
         [Server]
+        public void OnPlaced()
+        {
+            OnServerPlacedInternal();
+        }
+
+        [Server]
         public void OnTurnStart()
         {
-            OnServerTurnStart();
+            OnServerTurnStartInternal();
         }
     }
 }

@@ -148,6 +148,17 @@ namespace KILLGRID.Actors.Placeables
         }
 
         [Server]
+        public void SetOccupyingTile(HexTileActor hexTileActor)
+        {
+            occupyingTile = hexTileActor;
+
+            foreach (PlaceableActorComponent placeableActorComponent in placeableActorComponents)
+            {
+                placeableActorComponent.OnPlaced();
+            }
+        }
+
+        [Server]
         public void OnTurnStart()
         {
             // TODO: Also here consider a delay between each component's turn start for sequential animations
@@ -155,12 +166,6 @@ namespace KILLGRID.Actors.Placeables
             {
                 placeableActorComponent.OnTurnStart();
             }
-        }
-
-        [Server]
-        public void SetOccupyingTile(HexTileActor hexTileActor)
-        {
-            occupyingTile = hexTileActor;
         }
     }
 }

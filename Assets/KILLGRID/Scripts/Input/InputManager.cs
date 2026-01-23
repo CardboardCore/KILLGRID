@@ -8,6 +8,7 @@ namespace KILLGRID.Input
         private GameInputActions inputActions;
 
         public GameInputActions.PlayerActions Player => inputActions.Player;
+        public GameInputActions.CheatsActions Cheats => inputActions.Cheats;
 
         public InputManager()
         {
@@ -15,6 +16,7 @@ namespace KILLGRID.Input
             inputActions.Enable();
 
             Player.Disable();
+            Cheats.Disable();
         }
 
         ~InputManager()

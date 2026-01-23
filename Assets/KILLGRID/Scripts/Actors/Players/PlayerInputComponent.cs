@@ -16,6 +16,8 @@ namespace KILLGRID.Actors.Players
         public event Action CameraStepForwardEvent;
         public event Action CameraStepBackwardEvent;
 
+        public event Action CheatIncrementGeneratorEvent;
+
         protected override void OnInjected()
         {
             base.OnInjected();
@@ -29,6 +31,8 @@ namespace KILLGRID.Actors.Players
             inputManager.Player.Select.performed += OnSelectPerformed;
             inputManager.Player.CameraStepForward.performed += OnCameraStepForwardPerformed;
             inputManager.Player.CameraStepBackward.performed += OnCameraStepBackwardPerformed;
+
+            inputManager.Cheats.IncrementGenerator.performed += OnCheatIncrementGeneratorPerformed;
         }
 
         protected override void OnReleased()
@@ -39,6 +43,8 @@ namespace KILLGRID.Actors.Players
                 inputManager.Player.Select.performed -= OnSelectPerformed;
                 inputManager.Player.CameraStepForward.performed -= OnCameraStepForwardPerformed;
                 inputManager.Player.CameraStepBackward.performed -= OnCameraStepBackwardPerformed;
+
+                inputManager.Cheats.IncrementGenerator.performed -= OnCheatIncrementGeneratorPerformed;
             }
 
             base.OnReleased();
@@ -63,6 +69,11 @@ namespace KILLGRID.Actors.Players
         private void OnCameraStepBackwardPerformed(InputAction.CallbackContext context)
         {
             CameraStepBackwardEvent?.Invoke();
+        }
+
+        private void OnCheatIncrementGeneratorPerformed(InputAction.CallbackContext obj)
+        {
+            CheatIncrementGeneratorEvent?.Invoke();
         }
     }
 }

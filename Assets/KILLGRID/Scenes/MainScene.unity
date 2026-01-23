@@ -1178,13 +1178,14 @@ MonoBehaviour:
   playerSpawnMethod: 1
   spawnPrefabs:
   - {fileID: 132614279100173591, guid: f964e5d4b4338ac44906b5a3aa3d8e3d, type: 3}
+  - {fileID: 6106594953075755568, guid: 7de051241a7f2324483c43144452fbc2, type: 3}
   - {fileID: 7616227260462213615, guid: a31be44f241fe9443b23817780f8e204, type: 3}
   - {fileID: 457662435917514121, guid: 4b1d677678121ea42b8ce4fd1532394b, type: 3}
   - {fileID: 1175189974620988241, guid: 1cb850e23284d014da6fdd861c5ebdc7, type: 3}
+  - {fileID: 5527465277121703327, guid: 27e0ddaae5662c94bb6e7089d7d26a92, type: 3}
   - {fileID: 7786128614114064540, guid: 686bffdb695c5944ba5071678a6962b7, type: 3}
   - {fileID: 4003462785276685133, guid: 0a6a00bf44e7bd34a924a4b739f9db84, type: 3}
   - {fileID: 4975823234694500612, guid: 17d71056f7be4bd4492d06669b0f9d9c, type: 3}
-  - {fileID: 5527465277121703327, guid: 27e0ddaae5662c94bb6e7089d7d26a92, type: 3}
   - {fileID: 7651445289317882709, guid: 7c476792de614ee498596252a8df247a, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:

@@ -605,6 +605,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Cheats",
+            "id": "dc2c4e82-97e6-40ff-880e-3bee124552a5",
+            "actions": [
+                {
+                    "name": "IncrementGenerator",
+                    "type": "Button",
+                    "id": "81f3ae67-57eb-4005-98df-5f87a69c51dc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "93251eb7-9b7e-4b92-95cd-967bf9cddab3",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "IncrementGenerator",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
