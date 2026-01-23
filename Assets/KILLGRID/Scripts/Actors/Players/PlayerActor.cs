@@ -14,6 +14,9 @@ namespace KILLGRID.Actors.Players
 
         [SerializeField] private GameObject viewObject;
 
+        [SyncVar] private int playerIndex;
+
+        public int PlayerIndex => playerIndex;
         public PlayerInteractComponent PlayerInteractComponent { get; private set; }
 
         protected override void OnInjected()
@@ -29,6 +32,12 @@ namespace KILLGRID.Actors.Players
         private void Rpc_EnableInput(NetworkConnectionToClient target)
         {
             inputManager.Player.Enable();
+        }
+
+        [Server]
+        public void SetPlayerIndex(int playerIndex)
+        {
+            this.playerIndex = playerIndex;
         }
 
         [Server]

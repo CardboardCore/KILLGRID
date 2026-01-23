@@ -16,4 +16,4 @@ MonoBehaviour:
   - name: Core HQ
     type: 0
     cost: 0
-    placeableActorPrefab: {fileID: 1939842874171700737, guid: f964e5d4b4338ac44906b5a3aa3d8e3d, type: 3}
+    placeableActorPrefab: {fileID: 5729261430322802982, guid: 7de051241a7f2324483c43144452fbc2, type: 3}

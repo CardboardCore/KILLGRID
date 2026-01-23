@@ -1,19 +1,41 @@
 ﻿using System;
 using Attic.Mirror.Actors;
+using KILLGRID.Actors.HexGrid;
+using KILLGRID.Gameplay.Placeables;
 using Mirror;
 using UnityEngine;
 
 namespace KILLGRID.Actors.Placeables
 {
-
-    public class PlaceableActor : Actor
+    [Serializable]
+    public class PlaceableActorConfig
     {
+        [SerializeField] private PlaceableType placeableType;
         [SerializeField] private GameObject greenHoloView;
         [SerializeField] private GameObject redHoloView;
         [SerializeField] private GameObject normalView;
 
+        public PlaceableType PlaceableType => placeableType;
+        public GameObject GreenHoloView => greenHoloView;
+        public GameObject RedHoloView => redHoloView;
+        public GameObject NormalView => normalView;
+    }
+
+    public class PlaceableActor : Actor
+    {
+        [SerializeField] private PlaceableActorConfig config;
+
         private bool isSpawned;
         private event Action spawnEvent;
+
+        private HexTileActor occupyingTile;
+
+        private PlaceableActorComponent[] placeableActorComponents;
+
+        /// <summary>
+        /// Server only. The tile this placeable is occupying.
+        /// </summary>
+        public HexTileActor OccupyingTile => occupyingTile;
 
         protected override void OnInjected()
         {
@@ -25,6 +47,16 @@ namespace KILLGRID.Actors.Placeables
             spawnEvent = null;
 
             isSpawned = true;
+
+            if (isServer)
+            {
+                placeableActorComponents = GetComponentsInChildren<PlaceableActorComponent>();
+
+                foreach (PlaceableActorComponent placeableActorComponent in placeableActorComponents)
+                {
+                    placeableActorComponent.Initialize(this);
+                }
+            }
         }
 
         [Command(requiresAuthority = false)]
@@ -67,8 +99,8 @@ namespace KILLGRID.Actors.Placeables
         [Client]
         public void HideVisuals(bool callCommand)
         {
-            greenHoloView.SetActive(false);
-            normalView.SetActive(false);
+            config.GreenHoloView.SetActive(false);
+            config.NormalView.SetActive(false);
 
             if (callCommand)
             {
@@ -79,9 +111,9 @@ namespace KILLGRID.Actors.Placeables
         [Client]
         public void ShowAsGreenHologram(bool callCommand)
         {
-            greenHoloView.SetActive(true);
-            redHoloView.SetActive(false);
-            normalView.SetActive(false);
+            config.GreenHoloView.SetActive(true);
+            config.RedHoloView.SetActive(false);
+            config.NormalView.SetActive(false);
 
             if (callCommand)
             {
@@ -92,9 +124,9 @@ namespace KILLGRID.Actors.Placeables
         [Client]
         public void ShowAsRedHologram(bool callCommand)
         {
-            redHoloView.SetActive(true);
-            greenHoloView.SetActive(false);
-            normalView.SetActive(false);
+            config.GreenHoloView.SetActive(false);
+            config.RedHoloView.SetActive(true);
+            config.NormalView.SetActive(false);
 
             if (callCommand)
             {
@@ -105,13 +137,34 @@ namespace KILLGRID.Actors.Placeables
         [Client]
         public void ShowAsNormal(bool callCommand)
         {
-            greenHoloView.SetActive(false);
-            redHoloView.SetActive(false);
-            normalView.SetActive(true);
+            config.GreenHoloView.SetActive(false);
+            config.RedHoloView.SetActive(false);
+            config.NormalView.SetActive(true);
 
             if (callCommand)
             {
                 Cmd_ShowAsNormal();
+            }
+        }
+
+        [Server]
+        public void SetOccupyingTile(HexTileActor hexTileActor)
+        {
+            occupyingTile = hexTileActor;
+
+            foreach (PlaceableActorComponent placeableActorComponent in placeableActorComponents)
+            {
+                placeableActorComponent.OnPlaced();
+            }
+        }
+
+        [Server]
+        public void OnTurnStart()
+        {
+            // TODO: Also here consider a delay between each component's turn start for sequential animations
+            foreach (PlaceableActorComponent placeableActorComponent in placeableActorComponents)
+            {
+                placeableActorComponent.OnTurnStart();
             }
         }
     }

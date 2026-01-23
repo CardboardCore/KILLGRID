@@ -20,6 +20,14 @@ PrefabInstance:
       propertyPath: cameraStepConfig.steps.Array.data[2].cameraId
       value: CheckBoard-2
       objectReference: {fileID: 0}
+    - target: {fileID: 3968325111754221530, guid: 686bffdb695c5944ba5071678a6962b7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: bd4aaad240e5fc441ace1ecfbbd24a68, type: 2}
+    - target: {fileID: 5189844089335380696, guid: 686bffdb695c5944ba5071678a6962b7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: bd4aaad240e5fc441ace1ecfbbd24a68, type: 2}
     - target: {fileID: 6230058086142353304, guid: 686bffdb695c5944ba5071678a6962b7, type: 3}
       propertyPath: _assetId
       value: 2795029818

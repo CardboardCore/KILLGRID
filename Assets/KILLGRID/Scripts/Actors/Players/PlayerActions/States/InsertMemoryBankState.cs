@@ -127,6 +127,8 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
                             return;
                         }
 
+                        owningStateMachine.Owner.GetComponent<PlayerOwnedTilesComponent>().AddOwnedTile(hexTileActor);
+
                         hexTileActor.RequestPlaceActor(placeableActor);
 
                         placeableActor.ShowAsNormal(true);

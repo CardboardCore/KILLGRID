@@ -693,6 +693,34 @@ namespace KILLGRID.Input
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Cheats"",
+            ""id"": ""dc2c4e82-97e6-40ff-880e-3bee124552a5"",
+            ""actions"": [
+                {
+                    ""name"": ""IncrementGenerator"",
+                    ""type"": ""Button"",
+                    ""id"": ""81f3ae67-57eb-4005-98df-5f87a69c51dc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""93251eb7-9b7e-4b92-95cd-967bf9cddab3"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IncrementGenerator"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -776,12 +804,16 @@ namespace KILLGRID.Input
             m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
             m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
             m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+            // Cheats
+            m_Cheats = asset.FindActionMap("Cheats", throwIfNotFound: true);
+            m_Cheats_IncrementGenerator = m_Cheats.FindAction("IncrementGenerator", throwIfNotFound: true);
         }
 
         ~@GameInputActions()
         {
             UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, GameInputActions.Player.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, GameInputActions.UI.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_Cheats.enabled, "This will cause a leak and performance issues, GameInputActions.Cheats.Disable() has not been called.");
         }
 
         /// <summary>
@@ -1177,6 +1209,102 @@ namespace KILLGRID.Input
         /// Provides a new <see cref="UIActions" /> instance referencing this action map.
         /// </summary>
         public UIActions @UI => new UIActions(this);
+
+        // Cheats
+        private readonly InputActionMap m_Cheats;
+        private List<ICheatsActions> m_CheatsActionsCallbackInterfaces = new List<ICheatsActions>();
+        private readonly InputAction m_Cheats_IncrementGenerator;
+        /// <summary>
+        /// Provides access to input actions defined in input action map "Cheats".
+        /// </summary>
+        public struct CheatsActions
+        {
+            private @GameInputActions m_Wrapper;
+
+            /// <summary>
+            /// Construct a new instance of the input action map wrapper class.
+            /// </summary>
+            public CheatsActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+            /// <summary>
+            /// Provides access to the underlying input action "Cheats/IncrementGenerator".
+            /// </summary>
+            public InputAction @IncrementGenerator => m_Wrapper.m_Cheats_IncrementGenerator;
+            /// <summary>
+            /// Provides access to the underlying input action map instance.
+            /// </summary>
+            public InputActionMap Get() { return m_Wrapper.m_Cheats; }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+            public void Enable() { Get().Enable(); }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+            public void Disable() { Get().Disable(); }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+            public bool enabled => Get().enabled;
+            /// <summary>
+            /// Implicitly converts an <see ref="CheatsActions" /> to an <see ref="InputActionMap" /> instance.
+            /// </summary>
+            public static implicit operator InputActionMap(CheatsActions set) { return set.Get(); }
+            /// <summary>
+            /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+            /// </summary>
+            /// <param name="instance">Callback instance.</param>
+            /// <remarks>
+            /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+            /// </remarks>
+            /// <seealso cref="CheatsActions" />
+            public void AddCallbacks(ICheatsActions instance)
+            {
+                if (instance == null || m_Wrapper.m_CheatsActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_CheatsActionsCallbackInterfaces.Add(instance);
+                @IncrementGenerator.started += instance.OnIncrementGenerator;
+                @IncrementGenerator.performed += instance.OnIncrementGenerator;
+                @IncrementGenerator.canceled += instance.OnIncrementGenerator;
+            }
+
+            /// <summary>
+            /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+            /// </summary>
+            /// <remarks>
+            /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+            /// </remarks>
+            /// <seealso cref="CheatsActions" />
+            private void UnregisterCallbacks(ICheatsActions instance)
+            {
+                @IncrementGenerator.started -= instance.OnIncrementGenerator;
+                @IncrementGenerator.performed -= instance.OnIncrementGenerator;
+                @IncrementGenerator.canceled -= instance.OnIncrementGenerator;
+            }
+
+            /// <summary>
+            /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="CheatsActions.UnregisterCallbacks(ICheatsActions)" />.
+            /// </summary>
+            /// <seealso cref="CheatsActions.UnregisterCallbacks(ICheatsActions)" />
+            public void RemoveCallbacks(ICheatsActions instance)
+            {
+                if (m_Wrapper.m_CheatsActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            /// <summary>
+            /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+            /// </summary>
+            /// <remarks>
+            /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+            /// </remarks>
+            /// <seealso cref="CheatsActions.AddCallbacks(ICheatsActions)" />
+            /// <seealso cref="CheatsActions.RemoveCallbacks(ICheatsActions)" />
+            /// <seealso cref="CheatsActions.UnregisterCallbacks(ICheatsActions)" />
+            public void SetCallbacks(ICheatsActions instance)
+            {
+                foreach (var item in m_Wrapper.m_CheatsActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_CheatsActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        /// <summary>
+        /// Provides a new <see cref="CheatsActions" /> instance referencing this action map.
+        /// </summary>
+        public CheatsActions @Cheats => new CheatsActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         /// <summary>
         /// Provides access to the input control scheme.
@@ -1355,6 +1483,21 @@ namespace KILLGRID.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        }
+        /// <summary>
+        /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Cheats" which allows adding and removing callbacks.
+        /// </summary>
+        /// <seealso cref="CheatsActions.AddCallbacks(ICheatsActions)" />
+        /// <seealso cref="CheatsActions.RemoveCallbacks(ICheatsActions)" />
+        public interface ICheatsActions
+        {
+            /// <summary>
+            /// Method invoked when associated input action "IncrementGenerator" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnIncrementGenerator(InputAction.CallbackContext context);
         }
     }
 }

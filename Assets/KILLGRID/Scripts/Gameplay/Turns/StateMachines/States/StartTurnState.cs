@@ -16,6 +16,8 @@ namespace KILLGRID.Gameplay.Turns.StateMachines.States
             if (NetworkServer.active)
             {
                 PlayerActor currentPlayer = roundManager.GetCurrentPlayer();
+
+                currentPlayer.GetComponent<PlayerOwnedTilesComponent>().OnTurnStart();
                 currentPlayer.EnableInput();
             }
 

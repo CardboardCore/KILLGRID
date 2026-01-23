@@ -68,10 +68,23 @@ namespace KILLGRID.Actors.HexGrid
                     HexTileActor hexTileActor = Instantiate(gridData.TilePrefab, new Vector3(position.x, gridData.GridHeightOffset, position.y), Quaternion.identity);
                     NetworkServer.Spawn(hexTileActor.gameObject);
 
+                    hexTileActor.SetCoordinates(x, y);
+
                     hexTiles[x, y] = hexTileActor;
                     flatHexTiles[y * gridData.GridWidth + x] = hexTileActor;
                 }
             }
+        }
+
+        [Server]
+        public HexTileActor GetGridTile(int x, int y)
+        {
+            if (x < 0 || x >= gridData.GridWidth || y < 0 || y >= gridData.GridHeight)
+            {
+                return null;
+            }
+
+            return hexTiles[x, y];
         }
     }
 }
