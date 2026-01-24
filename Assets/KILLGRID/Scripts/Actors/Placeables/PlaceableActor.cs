@@ -59,6 +59,16 @@ namespace KILLGRID.Actors.Placeables
             }
         }
 
+        private void Update()
+        {
+            if (!occupyingTile)
+            {
+                return;
+            }
+
+            transform.position = occupyingTile.transform.position;
+        }
+
         [Command(requiresAuthority = false)]
         private void Cmd_HideVisuals() { Rpc_HideVisuals(); }
 
@@ -165,6 +175,15 @@ namespace KILLGRID.Actors.Placeables
             foreach (PlaceableActorComponent placeableActorComponent in placeableActorComponents)
             {
                 placeableActorComponent.OnTurnStart();
+            }
+        }
+
+        [Server]
+        public void OnTurnEnd()
+        {
+            foreach (PlaceableActorComponent placeableActorComponent in placeableActorComponents)
+            {
+                placeableActorComponent.OnTurnEnd();
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿using Attic.DI;
+﻿using System;
+using System.Collections.Generic;
+using Attic.DI;
 using Attic.Utilities;
 using Mirror;
 using KILLGRID.Actors.Players;
@@ -15,12 +17,19 @@ namespace PrisonBreak.Players
     [Injectable]
     public class PlayerManager : NetworkBehaviour
     {
+        [Header("References")]
         [SerializeField] private PlayerActor playerActorOnePrefab;
         [SerializeField] private PlayerActor playerActorTwoPrefab;
 
+        [Header("Settings")]
+        [SerializeField] private bool awaitFullGame;
+
         private readonly SyncList<PlayerEntry> playerEntries = new SyncList<PlayerEntry>();
 
+        public bool AwaitFullGame => awaitFullGame;
         public int PlayerCount => playerEntries.Count;
+
+        public event Action<PlayerEntry> PlayerAddedEvent;
 
         public override void OnStartServer()
         {
@@ -60,7 +69,7 @@ namespace PrisonBreak.Players
         private void OnPlayerEntryAdded(int index)
         {
             PlayerEntry entry = playerEntries[index];
-            // entry.Player.Initialize();
+            PlayerAddedEvent?.Invoke(entry);
         }
 
         private void OnPlayerEntryRemoved(int index, PlayerEntry playerEntry)
@@ -117,6 +126,18 @@ namespace PrisonBreak.Players
             }
 
             return playerEntries[index].Player;
+        }
+
+        public List<PlayerActor> GetAllPlayers()
+        {
+            List<PlayerActor> players = new List<PlayerActor>();
+
+            foreach (PlayerEntry entry in playerEntries)
+            {
+                players.Add(entry.Player);
+            }
+
+            return players;
         }
     }
 }

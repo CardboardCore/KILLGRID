@@ -62,6 +62,11 @@ namespace KILLGRID.Actors.Players
 
                 if (interactableComponent)
                 {
+                    if (!interactableComponent.CanInteract(Owner as PlayerActor))
+                    {
+                        return;
+                    }
+
                     if (currentHighlightedInteractableComponent == interactableComponent)
                     {
                         return;

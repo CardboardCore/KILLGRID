@@ -9,7 +9,8 @@ namespace KILLGRID.Gameplay.StateMachines
         {
             SetInitialState<LoadPlayerState>();
 
-            AddStaticTransition<LoadPlayerState, SpawnGridState>();
+            AddStaticTransition<LoadPlayerState, AwaitFullGameState>();
+            AddStaticTransition<AwaitFullGameState, SpawnGridState>();
             AddStaticTransition<SpawnGridState, ActiveGameState>();
         }
     }

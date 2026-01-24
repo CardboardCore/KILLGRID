@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136085195839470037}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.70710677, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 2787448587848259184}
   - {fileID: 5167663270426404930}
   m_Father: {fileID: 540665528456503143}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &2495469177376646726
 GameObject:
   m_ObjectHideFlags: 0
@@ -68,7 +68,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.024}
+  m_AnchoredPosition: {x: -0, y: 0.0089}
   m_SizeDelta: {x: 30.45, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &8335472807801212671
@@ -225,9 +225,12 @@ GameObject:
   m_Component:
   - component: {fileID: 540665528456503143}
   - component: {fileID: 7545118602054059739}
+  - component: {fileID: -33184590543817158}
   - component: {fileID: 328187453152705546}
   - component: {fileID: 6095222363732137010}
   - component: {fileID: 692507055453633080}
+  - component: {fileID: 6455401379427291327}
+  - component: {fileID: 2016709982535470594}
   m_Layer: 0
   m_Name: MemoryBank
   m_TagString: Untagged
@@ -268,6 +271,40 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+--- !u!114 &-33184590543817158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5527465277121703327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mirror.Components::Mirror.NetworkTransformReliable
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 540665528456503143}
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  onlySyncOnChange: 1
+  compressRotation: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  coordinateSpace: 0
+  timelineOffset: 1
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  onlySyncOnChangeCorrectionMultiplier: 2
+  useFixedUpdate: 0
+  rotationSensitivity: 0.01
+  positionPrecision: 0.01
+  scalePrecision: 0.01
 --- !u!114 &328187453152705546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,6 +336,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   interactableConfig:
+    immediateUnselect: 0
     interactableType: 1
     highlightEffect: {fileID: 692507055453633080}
     hoverProfile: {fileID: 11400000, guid: 9fb58a8e609ad0b4f92bd5b662ced2c3, type: 2}
@@ -564,6 +602,40 @@ MonoBehaviour:
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
   hitFxRadius: 0.5
+--- !u!114 &6455401379427291327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5527465277121703327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e16404583a44112967b61f61dd4a7d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Actors.TableButtons.FacilityButton
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  interactableComponent: {fileID: 6095222363732137010}
+  nameText: {fileID: 2384430034225225663}
+  costText: {fileID: 6443129642819399762}
+  placeableType: 0
+--- !u!114 &2016709982535470594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5527465277121703327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f4a7ff7fdfe4bed943e94846954746d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Actors.Interactables.Requirements.MemoryBankRequirement
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!1 &6562931139847247999
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,8 +664,8 @@ Transform:
   m_GameObject: {fileID: 6562931139847247999}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.13432, y: 0.040108826, z: 0.3270811}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 0.08323005, y: 0.016674442, z: 0.3270811}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 781936799747084475}
@@ -710,7 +782,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.024}
+  m_AnchoredPosition: {x: 0, y: 0.008899998}
   m_SizeDelta: {x: 13.1, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &3707759430238026548

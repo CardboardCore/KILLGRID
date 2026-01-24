@@ -1,5 +1,7 @@
-﻿using Attic.Mirror.Actors.Components;
+﻿using System.Collections.Generic;
+using Attic.Mirror.Actors.Components;
 using KILLGRID.Actors.HexGrid;
+using KILLGRID.Actors.Placeables;
 using Mirror;
 
 namespace KILLGRID.Actors.Players
@@ -7,6 +9,8 @@ namespace KILLGRID.Actors.Players
     public class PlayerOwnedTilesComponent : ActorComponent
     {
         private SyncList<uint> ownedTileNetIds = new SyncList<uint>();
+
+        public IReadOnlyList<uint> OwnedTileNetIds => ownedTileNetIds;
 
         protected override void OnInjected()
         {
@@ -30,20 +34,10 @@ namespace KILLGRID.Actors.Players
             base.OnReleased();
         }
 
+        [Client]
         private void OnOwnedTileAdded(int index)
         {
 
-        }
-
-        [Client]
-        private HexTileActor GetTileActorOnClient(uint actorNetId)
-        {
-            if (NetworkClient.spawned.TryGetValue(actorNetId, out NetworkIdentity identity))
-            {
-                return identity.GetComponent<HexTileActor>();
-            }
-
-            return null;
         }
 
         [Server]
@@ -81,6 +75,46 @@ namespace KILLGRID.Actors.Players
                 HexTileActor hexTileActor = GetTileActorOnServer(ownedTileNetId);
                 hexTileActor.OnTurnStart();
             }
+        }
+
+        [Server]
+        public void OnTurnEnd()
+        {
+            foreach (uint ownedTileNetId in ownedTileNetIds)
+            {
+                HexTileActor hexTileActor = GetTileActorOnServer(ownedTileNetId);
+                hexTileActor.OnTurnEnd();
+            }
+        }
+
+        [Client]
+        public T[] GetAllOwnedTilesWithComponent<T>() where T : PlaceableActorComponent
+        {
+            List<T> components = new List<T>();
+
+            foreach (uint ownedTileNetId in ownedTileNetIds)
+            {
+                if (!NetworkClient.spawned.TryGetValue(ownedTileNetId, out NetworkIdentity identity))
+                {
+                    continue;
+                }
+
+                HexTileActor hexTileActor = identity.GetComponent<HexTileActor>();
+
+                if (!hexTileActor.TryGetPlacedActor(out PlaceableActor placeableActor))
+                {
+                    continue;
+                }
+
+                T component = placeableActor.GetComponent<T>();
+
+                if (component != null)
+                {
+                    components.Add(component);
+                }
+            }
+
+            return components.ToArray();
         }
     }
 }

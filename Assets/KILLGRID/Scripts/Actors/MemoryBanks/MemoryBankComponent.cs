@@ -3,6 +3,8 @@ using Attic.Mirror.Actors.Components;
 using Attic.Utilities;
 using KILLGRID.Actors.Interactables;
 using KILLGRID.Gameplay.Placeables;
+using KILLGRID.Gameplay.Tables;
+using Mirror;
 using TMPro;
 using UnityEngine;
 
@@ -21,6 +23,7 @@ namespace KILLGRID.Actors.TableButtons
         [SerializeField] private PlaceableType placeableType;
 
         private PlaceableConfig placeableConfig;
+        private TableSpot myTableSpot;
 
         public PlaceableConfig PlaceableConfig => placeableConfig;
 
@@ -36,6 +39,27 @@ namespace KILLGRID.Actors.TableButtons
 
             nameText.text = placeableConfig.Name;
             costText.text = placeableConfig.Cost.ToString();
+        }
+
+        [Command(requiresAuthority = false)]
+        private void Cmd_Consume()
+        {
+            myTableSpot.ClearSpot();
+
+            NetworkServer.Destroy(gameObject);
+        }
+
+        [Server]
+        public void CacheTableSpot(TableSpot tableSpot)
+        {
+            myTableSpot = tableSpot;
+        }
+
+        [Client]
+        public void RequestConsume()
+        {
+            Cmd_Consume();
+            // TODO: Change to playing animations and use "callCommand" chain to make it feel direct
         }
     }
 }

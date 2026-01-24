@@ -34,6 +34,12 @@ namespace KILLGRID.Actors.Players
             inputManager.Player.Enable();
         }
 
+        [TargetRpc]
+        private void Rpc_DisableInput(NetworkConnectionToClient target)
+        {
+
+        }
+
         [Server]
         public void SetPlayerIndex(int playerIndex)
         {
@@ -44,6 +50,12 @@ namespace KILLGRID.Actors.Players
         public void EnableInput()
         {
             Rpc_EnableInput(connectionToClient);
+        }
+
+        [Server]
+        public void DisableInput()
+        {
+            Rpc_DisableInput(connectionToClient);
         }
     }
 }

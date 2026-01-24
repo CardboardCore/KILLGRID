@@ -1,11 +1,15 @@
-﻿using Attic.DI;
+﻿using System.Collections.Generic;
+using Attic.DI;
 using Attic.Mirror.Actors;
 using Attic.Utilities;
+using Attic.Utils.Invoking;
 using KILLGRID.Actors.HexGrid;
 using KILLGRID.Actors.Interactables;
 using KILLGRID.Actors.Placeables;
+using KILLGRID.Actors.Placeables.PlaceableActorComponents;
 using KILLGRID.Actors.TableButtons;
 using KILLGRID.Gameplay.Placeables;
+using UnityEngine;
 
 namespace KILLGRID.Actors.Players.PlayerActions.States
 {
@@ -13,6 +17,7 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
     {
         [Inject] private PlaceablesFactory placeablesFactory;
         [Inject] private ActorCleaner actorCleaner;
+        [Inject] private InvokeWrapper invokeWrapper;
 
         private MemoryBankComponent memoryBankComponent;
         private bool isSpawning;
@@ -31,7 +36,7 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
         protected override void OnHover(InteractableComponent interactableComponent)
         {
-            if (!interactableComponent)
+            if (!memoryBankComponent || !interactableComponent)
             {
                 return;
             }
@@ -110,7 +115,7 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
                         memoryBankComponent = null;
                     }
 
-                    ToState<IdleState>();
+                    ToState<AwaitingPlayerSelectionState>();
 
                     break;
 
@@ -127,18 +132,65 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
                             return;
                         }
 
-                        owningStateMachine.Owner.GetComponent<PlayerOwnedTilesComponent>().AddOwnedTile(hexTileActor);
+                        PlayerOwnedTilesComponent playerOwnedTilesComponent = owningStateMachine.Owner.GetComponent<PlayerOwnedTilesComponent>();
+
+                        // Get all generators and spend energy based on memory bank cost
+                        GeneratorComponent[] allOwnedGenerators = playerOwnedTilesComponent.GetAllOwnedTilesWithComponent<GeneratorComponent>();
+
+                        int remainingToSpend = memoryBankComponent.PlaceableConfig.Cost;
+
+                        // TODO: Use a better algorithm to spend energy from generators
+                        Dictionary<GeneratorComponent, int> energySpentPerGenerator = new Dictionary<GeneratorComponent, int>();
+
+                        foreach (GeneratorComponent generator in allOwnedGenerators)
+                        {
+                            if (remainingToSpend <= 0)
+                            {
+                                break;
+                            }
+
+                            int energyAvailable = generator.GetEnergyProduction();
+
+                            if (energyAvailable <= 0)
+                            {
+                                continue;
+                            }
+
+                            int energyToSpend = Mathf.Min(energyAvailable, remainingToSpend);
+
+                            energySpentPerGenerator.Add(generator, energyToSpend);
+
+                            Log.Write($"Mapping to spend {energyToSpend} energy from generator on tile {generator.name}");
+
+                            remainingToSpend -= energyToSpend;
+                        }
+
+                        if (remainingToSpend > 0)
+                        {
+                            Log.Exception($"Not enough energy to spend for placing memory bank. Still need to spend {remainingToSpend} energy.");
+                        }
+
+                        foreach (KeyValuePair<GeneratorComponent, int> keyValuePair in energySpentPerGenerator)
+                        {
+                            keyValuePair.Key.RequestSpendEnergy(keyValuePair.Value);
+                        }
+
+                        memoryBankComponent.RequestConsume();
+
+                        playerOwnedTilesComponent.AddOwnedTile(hexTileActor);
+
+                        owningStateMachine.Owner.GetComponent<PlayerMemoryBankComponent>().Cmd_RemoveMemoryBank(memoryBankComponent.netId);
 
                         hexTileActor.RequestPlaceActor(placeableActor);
 
                         placeableActor.ShowAsNormal(true);
 
-                        // memoryBankComponent.Consume();
 
                         placeableActor = null;
                         memoryBankComponent = null;
 
-                        ToState<IdleState>();
+                        // TODO: Somehow make sure all data is synced before going to next state
+                        invokeWrapper.Invoke(ToState<CheckEnergyState>, 1f);
                     }
 
                     break;

@@ -1,5 +1,6 @@
 ﻿using Attic.DI;
 using Attic.StateMachines;
+using KILLGRID.Actors.Players;
 using KILLGRID.Input;
 
 namespace KILLGRID.Gameplay.Turns.StateMachines.States
@@ -11,7 +12,11 @@ namespace KILLGRID.Gameplay.Turns.StateMachines.States
 
         protected override void OnEnter()
         {
-            inputManager.Player.Disable();
+            PlayerActor currentPlayer = roundManager.GetCurrentPlayer();
+
+            currentPlayer.GetComponent<PlayerOwnedTilesComponent>().OnTurnEnd();
+            currentPlayer.DisableInput();
+
             roundManager.EndPlayerTurn();
 
             ToNextState();

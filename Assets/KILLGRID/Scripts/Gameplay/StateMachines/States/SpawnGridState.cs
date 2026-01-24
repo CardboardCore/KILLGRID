@@ -1,6 +1,7 @@
 ﻿using Attic.DI;
 using Attic.StateMachines;
 using KILLGRID.Actors.HexGrid;
+using Mirror;
 
 namespace KILLGRID.Gameplay.StateMachines.States
 {
@@ -10,7 +11,11 @@ namespace KILLGRID.Gameplay.StateMachines.States
 
         protected override void OnEnter()
         {
-            hexGridActor.SpawnGrid();
+            if (NetworkServer.active)
+            {
+                hexGridActor.SpawnGrid();
+            }
+
             ToNextState();
         }
 

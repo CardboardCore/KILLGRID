@@ -35,7 +35,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
             (-1, 1)  // NW
         };
 
-        private List<(int x, int y)> energizedTiles = new List<(int, int)>();
+        private readonly List<(int x, int y)> energizedTiles = new List<(int, int)>();
         private int lastDirectionIndex = 5;
 
         protected override void OnInjected()
@@ -89,7 +89,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
                     continue;
                 }
 
-                if (!TryGetHexTileAtOffset(nextTile, out HexTileActor hexTile))
+                if (!TryGetHexTileActorAtOffset(nextTile, out HexTileActor hexTile))
                 {
                     continue;
                 }
@@ -106,7 +106,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
         }
 
         [Server]
-        private bool TryGetHexTileAtOffset((int x, int y) offset, out HexTileActor hexTile)
+        private bool TryGetHexTileActorAtOffset((int x, int y) offset, out HexTileActor hexTile)
         {
             // Assuming Owner has a method to get its current tile position
             (int ownerX, int ownerY) = Owner.OccupyingTile.GetGridPosition();
@@ -122,10 +122,54 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
             return true;
         }
 
+        [Command(requiresAuthority = false)]
+        private void Cmd_SpendEnergy(int amount)
+        {
+            // Get random energized tile to de-energize
+            if (energizedTiles.Count == 0)
+            {
+                Log.Error($"Generator owned by player index {Owner.OccupyingTile.OwnerPlayerIndex} has no energized tiles to spend energy from.");
+                return;
+            }
+
+            Log.Write($"De-energizing {amount} tiles for player index {Owner.OccupyingTile.OwnerPlayerIndex}.");
+
+            if (amount > energizedTiles.Count)
+            {
+                Log.Exception($"Something went wrong trying to spend {amount} energy from generator owned by player index {Owner.OccupyingTile.OwnerPlayerIndex} which only has {energizedTiles.Count} energized tiles.");
+            }
+
+            int deEnergizeIndex = energizedTiles.Count - 1;
+
+            // Find tiles counter-clockwise from the last energized tile
+            for (int i = 0; i < amount; i++)
+            {
+                (int x, int y) tileToDeEnergize = energizedTiles[deEnergizeIndex];
+
+                if (!TryGetHexTileActorAtOffset(tileToDeEnergize, out HexTileActor hexTile))
+                {
+                    Log.Error($"Failed to find hex tile at offset x:{tileToDeEnergize.x} y:{tileToDeEnergize.y} to de-energize.");
+                    return;
+                }
+
+                Log.Write($"De-energizing tile at offset x:{tileToDeEnergize.x} y:{tileToDeEnergize.y} for player index {Owner.OccupyingTile.OwnerPlayerIndex}.");
+
+                // De-energize the tile
+                hexTile.SetOwner(-1);
+
+                // Error here!!
+                energizedTiles.RemoveAt(deEnergizeIndex);
+
+                deEnergizeIndex -= 1;
+            }
+
+            lastDirectionIndex = deEnergizeIndex;
+        }
+
         [Server]
         protected override void OnServerPlacedInternal()
         {
-            energizedTiles.Add(Owner.OccupyingTile.GetGridPosition());
+            // energizedTiles.Add(Owner.OccupyingTile.GetGridPosition());
         }
 
         [Server]
@@ -138,6 +182,24 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
             {
                 AddNextClockwiseTile();
             }
+        }
+
+        [Server]
+        protected override void OnServerTurnEndInternal()
+        {
+            // No action needed on turn end for the generator
+        }
+
+        [Server]
+        public int GetEnergyProduction()
+        {
+            return energizedTiles.Count;
+        }
+
+        [Client]
+        public void RequestSpendEnergy(int amount)
+        {
+            Cmd_SpendEnergy(amount);
         }
     }
 }

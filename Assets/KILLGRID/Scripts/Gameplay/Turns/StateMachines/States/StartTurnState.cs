@@ -2,7 +2,6 @@
 using Attic.StateMachines;
 using KILLGRID.Actors.Players;
 using KILLGRID.Input;
-using Mirror;
 
 namespace KILLGRID.Gameplay.Turns.StateMachines.States
 {
@@ -13,13 +12,10 @@ namespace KILLGRID.Gameplay.Turns.StateMachines.States
 
         protected override void OnEnter()
         {
-            if (NetworkServer.active)
-            {
-                PlayerActor currentPlayer = roundManager.GetCurrentPlayer();
+            PlayerActor currentPlayer = roundManager.GetCurrentPlayer();
 
-                currentPlayer.GetComponent<PlayerOwnedTilesComponent>().OnTurnStart();
-                currentPlayer.EnableInput();
-            }
+            currentPlayer.GetComponent<PlayerOwnedTilesComponent>().OnTurnStart();
+            currentPlayer.EnableInput();
 
             // Reset troops, resources, etc. for the new turn
             ToNextState();
