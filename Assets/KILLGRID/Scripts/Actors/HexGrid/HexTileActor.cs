@@ -178,7 +178,7 @@ namespace KILLGRID.Actors.HexGrid
         {
             placeableActor = null;
 
-            if (!NetworkServer.spawned.TryGetValue(placedActorNetId, out NetworkIdentity networkIdentity))
+            if (!NetworkClient.spawned.TryGetValue(placedActorNetId, out NetworkIdentity networkIdentity))
             {
                 return false;
             }

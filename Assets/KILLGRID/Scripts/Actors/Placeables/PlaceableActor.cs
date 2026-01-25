@@ -1,5 +1,6 @@
 ﻿using System;
 using Attic.Mirror.Actors;
+using Attic.Utilities;
 using KILLGRID.Actors.HexGrid;
 using KILLGRID.Gameplay.Placeables;
 using Mirror;
@@ -28,14 +29,18 @@ namespace KILLGRID.Actors.Placeables
         private bool isSpawned;
         private event Action spawnEvent;
 
-        private HexTileActor occupyingTile;
+        // Networked ID of the tile this placeable is occupying
+        [SyncVar(hook = nameof(OnOccupyingTileChanged))] private uint occupyingTileNetId;
 
         private PlaceableActorComponent[] placeableActorComponents;
 
+        private HexTileActor occupyingTile;
+
         /// <summary>
-        /// Server only. The tile this placeable is occupying.
+        /// The tile this placeable is occupying.
         /// </summary>
-        public HexTileActor OccupyingTile => occupyingTile;
+        public HexTileActor OccupyingTile => NetworkClient.spawned.TryGetValue(occupyingTileNetId, out NetworkIdentity identity)
+            ? identity.GetComponent<HexTileActor>() : null;
 
         protected override void OnInjected()
         {
@@ -67,6 +72,19 @@ namespace KILLGRID.Actors.Placeables
             }
 
             transform.position = occupyingTile.transform.position;
+        }
+
+        [Client]
+        private void OnOccupyingTileChanged(uint oldNetId, uint newNetId)
+        {
+            if (NetworkClient.spawned.TryGetValue(newNetId, out NetworkIdentity identity))
+            {
+                occupyingTile = identity.GetComponent<HexTileActor>();
+            }
+            else
+            {
+                occupyingTile = null;
+            }
         }
 
         [Command(requiresAuthority = false)]
@@ -160,7 +178,7 @@ namespace KILLGRID.Actors.Placeables
         [Server]
         public void SetOccupyingTile(HexTileActor hexTileActor)
         {
-            occupyingTile = hexTileActor;
+            occupyingTileNetId = hexTileActor.netId;
 
             foreach (PlaceableActorComponent placeableActorComponent in placeableActorComponents)
             {

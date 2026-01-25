@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Attic.DI;
 using Attic.Utilities;
 using KILLGRID.Actors.HexGrid;
@@ -10,6 +11,33 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
 {
     public class GeneratorComponent : PlaceableActorComponent
     {
+        [Serializable]
+        public struct EnergizedTile : IEquatable<EnergizedTile>
+        {
+            public int x;
+            public int y;
+
+            public static EnergizedTile FromTuple((int x, int y) tuple)
+            {
+                return new EnergizedTile { x = tuple.x, y = tuple.y };
+            }
+
+            public bool Equals(EnergizedTile other)
+            {
+                return x == other.x && y == other.y;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is EnergizedTile other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(x, y);
+            }
+        }
+
         [Inject] private HexGridActor hexGridActor;
         [Inject] private InputManager inputManager;
 
@@ -35,7 +63,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
             (-1, 1)  // NW
         };
 
-        private readonly List<(int x, int y)> energizedTiles = new List<(int, int)>();
+        private readonly SyncList<EnergizedTile> energizedTiles = new SyncList<EnergizedTile>();
         private int lastDirectionIndex = 5;
 
         protected override void OnInjected()
@@ -84,12 +112,12 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
                 int nextIndex = (lastDirectionIndex + i) % offsets.Length;
                 (int x, int y) nextTile = offsets[nextIndex];
 
-                if (energizedTiles.Contains(nextTile))
+                if (energizedTiles.Contains(EnergizedTile.FromTuple(nextTile)))
                 {
                     continue;
                 }
 
-                if (!TryGetHexTileActorAtOffset(nextTile, out HexTileActor hexTile))
+                if (!TryGetHexTileActorAtOffset(EnergizedTile.FromTuple(nextTile), out HexTileActor hexTile))
                 {
                     continue;
                 }
@@ -98,7 +126,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
 
                 hexTile.SetOwner(Owner.OccupyingTile.OwnerPlayerIndex);
 
-                energizedTiles.Add(nextTile);
+                energizedTiles.Add(EnergizedTile.FromTuple(nextTile));
                 lastDirectionIndex = nextIndex;
 
                 break;
@@ -106,7 +134,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
         }
 
         [Server]
-        private bool TryGetHexTileActorAtOffset((int x, int y) offset, out HexTileActor hexTile)
+        private bool TryGetHexTileActorAtOffset(EnergizedTile offset, out HexTileActor hexTile)
         {
             // Assuming Owner has a method to get its current tile position
             (int ownerX, int ownerY) = Owner.OccupyingTile.GetGridPosition();
@@ -144,7 +172,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
             // Find tiles counter-clockwise from the last energized tile
             for (int i = 0; i < amount; i++)
             {
-                (int x, int y) tileToDeEnergize = energizedTiles[deEnergizeIndex];
+                EnergizedTile tileToDeEnergize = energizedTiles[deEnergizeIndex];
 
                 if (!TryGetHexTileActorAtOffset(tileToDeEnergize, out HexTileActor hexTile))
                 {
@@ -190,7 +218,6 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
             // No action needed on turn end for the generator
         }
 
-        [Server]
         public int GetEnergyProduction()
         {
             return energizedTiles.Count;
