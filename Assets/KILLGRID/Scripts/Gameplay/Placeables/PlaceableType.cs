@@ -5,7 +5,7 @@
         // Facilities
         CoreHQ = 0,
         Generator = 1,
-        Fabricator = 2,
+        Uplink = 2,
 
         // Troops
         RunnerTroop = 10,

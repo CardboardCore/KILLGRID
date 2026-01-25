@@ -23,6 +23,8 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
         private bool isSpawning;
         private PlaceableActor placeableActor;
 
+        private PlayerOwnedTilesComponent playerOwnedTilesComponent;
+
         protected override void OnEnter()
         {
             base.OnEnter();
@@ -32,6 +34,30 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
             isSpawning = false;
             placeableActor = null;
+
+            // TODO: Based on memory bank type, show different highlights on valid tiles
+
+            // Get all build zone components for this player and highlight valid tiles
+            playerOwnedTilesComponent = owningStateMachine.Owner.GetComponent<PlayerOwnedTilesComponent>();
+
+            BuildZoneComponent[] buildZoneComponents = playerOwnedTilesComponent.GetAllOwnedTilesWithPlaceableComponent<BuildZoneComponent>();
+
+            foreach (BuildZoneComponent buildZoneComponent in buildZoneComponents)
+            {
+                buildZoneComponent.RequestShowBuildZone();
+            }
+        }
+
+        protected override void OnExit()
+        {
+            BuildZoneComponent[] buildZoneComponents = playerOwnedTilesComponent.GetAllOwnedTilesWithPlaceableComponent<BuildZoneComponent>();
+
+            foreach (BuildZoneComponent buildZoneComponent in buildZoneComponents)
+            {
+                buildZoneComponent.RequestHideBuildZone();
+            }
+
+            base.OnExit();
         }
 
         protected override void OnHover(InteractableComponent interactableComponent)
@@ -62,7 +88,6 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
                 if (hexTileActor.IsOccupied)
                 {
-                    // Show red hologram
                     placeableActor.ShowAsRedHologram(true);
                 }
                 else
@@ -132,10 +157,8 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
                             return;
                         }
 
-                        PlayerOwnedTilesComponent playerOwnedTilesComponent = owningStateMachine.Owner.GetComponent<PlayerOwnedTilesComponent>();
-
                         // Get all generators and spend energy based on memory bank cost
-                        GeneratorComponent[] allOwnedGenerators = playerOwnedTilesComponent.GetAllOwnedTilesWithComponent<GeneratorComponent>();
+                        GeneratorComponent[] allOwnedGenerators = playerOwnedTilesComponent.GetAllOwnedTilesWithPlaceableComponent<GeneratorComponent>();
 
                         int remainingToSpend = memoryBankComponent.PlaceableConfig.Cost;
 

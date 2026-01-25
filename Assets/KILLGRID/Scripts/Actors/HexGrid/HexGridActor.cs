@@ -1,6 +1,7 @@
 ﻿using System;
 using Attic.DI;
 using Attic.Mirror;
+using KILLGRID.Actors.Placeables.PlaceableActorComponents;
 using Mirror;
 using UnityEngine;
 
@@ -85,6 +86,17 @@ namespace KILLGRID.Actors.HexGrid
             }
 
             return hexTiles[x, y];
+        }
+
+        [Server]
+        public HexTileActor GetGridTile(TileCoords coords)
+        {
+            if (coords.x < 0 || coords.x >= gridData.GridWidth || coords.y < 0 || coords.y >= gridData.GridHeight)
+            {
+                return null;
+            }
+
+            return hexTiles[coords.x, coords.y];
         }
     }
 }

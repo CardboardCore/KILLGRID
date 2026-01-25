@@ -2,8 +2,10 @@
 using Attic.Mirror.Actors;
 using Attic.Utilities;
 using DG.Tweening;
+using HighlightPlus;
 using KILLGRID.Actors.Interactables;
 using KILLGRID.Actors.Placeables;
+using KILLGRID.Actors.Placeables.PlaceableActorComponents;
 using Mirror;
 using UnityEngine;
 
@@ -42,18 +44,18 @@ namespace KILLGRID.Actors.HexGrid
     {
         [Header("References")]
         [SerializeField] private InteractableComponent interactableComponent;
+        [SerializeField] private HighlightEffect buildZomeHighlightEffect;
 
         [Header("Settings")]
         [SerializeField] private HexTileConfig config;
 
+        private float initialFloatY;
+
         [SyncVar(hook = nameof(OnOwnerPlayerIndexChanged))] private int ownerPlayerIndex = -1;
-        // TODO: Probably need occupied state for multiple placeable types
         [SyncVar] private bool isOccupied;
 
         [SyncVar] private int gridCoordinatesX;
         [SyncVar] private int gridCoordinatesY;
-
-        private float initialFloatY;
 
         [SyncVar] private uint placedActorNetId;
 
@@ -63,7 +65,6 @@ namespace KILLGRID.Actors.HexGrid
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
-
             Gizmos.DrawWireSphere(transform.position + Vector3.up * config.FloatingHeight, 0.1f);
         }
 
@@ -103,6 +104,12 @@ namespace KILLGRID.Actors.HexGrid
             Material newMaterial = config.GetMaterialForPlayerIndex(ownerPlayerIndex);
             MeshRenderer meshRenderer = GetComponentInChildren<MeshRenderer>();
             meshRenderer.material = newMaterial;
+        }
+
+        [ClientRpc]
+        private void Rpc_ShowBuildZone(bool show)
+        {
+            buildZomeHighlightEffect.highlighted = show;
         }
 
         [Server]
@@ -150,9 +157,16 @@ namespace KILLGRID.Actors.HexGrid
             }
         }
 
+        [Command(requiresAuthority = false)]
+        public void ShowBuildZone(bool show)
+        {
+            Rpc_ShowBuildZone(show);
+        }
+
         [Client]
         public void MoveActorToTile(Actor actor)
         {
+            // TODO: This happens sometimes, and the next tile move will fix it, but should investigate further
             if (!actor.isOwned)
             {
                 Log.Error($"Trying to move actor {actor.name} that is not owned by this client.");
@@ -171,6 +185,11 @@ namespace KILLGRID.Actors.HexGrid
         public (int x, int y) GetGridPosition()
         {
             return new ValueTuple<int, int>(gridCoordinatesX, gridCoordinatesY);
+        }
+
+        public TileCoords GetTileCoords()
+        {
+            return TileCoords.FromTuple((gridCoordinatesX, gridCoordinatesY));
         }
 
         [Client]
