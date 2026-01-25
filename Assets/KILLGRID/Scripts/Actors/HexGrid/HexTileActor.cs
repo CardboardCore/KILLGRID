@@ -1,13 +1,10 @@
 ﻿using System;
-using Attic.DI;
 using Attic.Mirror.Actors;
 using Attic.Utilities;
 using DG.Tweening;
 using KILLGRID.Actors.Interactables;
 using KILLGRID.Actors.Placeables;
-using KILLGRID.Actors.Players;
 using Mirror;
-using PrisonBreak.Players;
 using UnityEngine;
 
 namespace KILLGRID.Actors.HexGrid
@@ -58,7 +55,7 @@ namespace KILLGRID.Actors.HexGrid
 
         private float initialFloatY;
 
-        private PlaceableActor placedActor;
+        [SyncVar] private uint placedActorNetId;
 
         public int OwnerPlayerIndex => ownerPlayerIndex;
         public bool IsOccupied => isOccupied;
@@ -72,29 +69,16 @@ namespace KILLGRID.Actors.HexGrid
 
         protected override void OnInjected()
         {
-            // interactableComponent.HoverEnterEvent += OnHoverEnter;
-            // interactableComponent.HoverExitEvent += OnHoverExit;
-            //
-            // interactableComponent.SelectEvent += OnSelect;
-
             initialFloatY = transform.position.y;
 
             UpdateMaterial();
         }
 
-        protected override void OnReleased()
-        {
-            // interactableComponent.HoverEnterEvent -= OnHoverEnter;
-            // interactableComponent.HoverExitEvent -= OnHoverExit;
-            //
-            // interactableComponent.SelectEvent -= OnSelect;
-        }
-
         [Command(requiresAuthority = false)]
         private void Cmd_PlaceActor(PlaceableActor placeableActor)
         {
-            placedActor = placeableActor;
-            placedActor.SetOccupyingTile(this);
+            placedActorNetId = placeableActor.netId;
+            placeableActor.SetOccupyingTile(this);
 
             isOccupied = true;
         }
@@ -102,24 +86,15 @@ namespace KILLGRID.Actors.HexGrid
         [Client]
         private void OnOwnerPlayerIndexChanged(int oldOwnerPlayerIndex, int newOwnerPlayerIndex)
         {
-            // Swap material
             UpdateMaterial();
-
-            // Begin floating (or stop floating)
             UpdatePosition();
         }
 
+        [Client]
         private void UpdatePosition()
         {
             float targetFloatY = ownerPlayerIndex == -1 ? initialFloatY : initialFloatY + config.FloatingHeight;
-
-            transform.DOMoveY(targetFloatY, config.FloatingDuration).OnUpdate(() => {
-                if (placedActor)
-                {
-                    // TODO: Disable placeable actor's networktransform after it's placed on the tile
-                    placedActor.transform.position = transform.position;
-                }
-            });
+            transform.DOMoveY(targetFloatY, config.FloatingDuration);
         }
 
         [Client]
@@ -146,9 +121,32 @@ namespace KILLGRID.Actors.HexGrid
         [Server]
         public void OnTurnStart()
         {
+            if (!NetworkServer.spawned.TryGetValue(placedActorNetId, out NetworkIdentity networkIdentity))
+            {
+                return;
+            }
+
+            PlaceableActor placedActor = networkIdentity.GetComponent<PlaceableActor>();
+
             if (placedActor)
             {
                 placedActor.OnTurnStart();
+            }
+        }
+
+        [Server]
+        public void OnTurnEnd()
+        {
+            if (!NetworkServer.spawned.TryGetValue(placedActorNetId, out NetworkIdentity networkIdentity))
+            {
+                return;
+            }
+
+            PlaceableActor placedActor = networkIdentity.GetComponent<PlaceableActor>();
+
+            if (placedActor)
+            {
+                placedActor.OnTurnEnd();
             }
         }
 
@@ -173,6 +171,26 @@ namespace KILLGRID.Actors.HexGrid
         public (int x, int y) GetGridPosition()
         {
             return new ValueTuple<int, int>(gridCoordinatesX, gridCoordinatesY);
+        }
+
+        [Client]
+        public bool TryGetPlacedActor(out PlaceableActor placeableActor)
+        {
+            placeableActor = null;
+
+            if (!NetworkClient.spawned.TryGetValue(placedActorNetId, out NetworkIdentity networkIdentity))
+            {
+                return false;
+            }
+
+            placeableActor = networkIdentity.GetComponent<PlaceableActor>();
+
+            if (!placeableActor)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

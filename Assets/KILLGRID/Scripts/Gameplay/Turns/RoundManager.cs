@@ -42,6 +42,12 @@ namespace KILLGRID.Gameplay.Turns
         }
 
         [Server]
+        public int GetCurrentPlayerIndex()
+        {
+            return currentPlayer;
+        }
+
+        [Server]
         public PlayerActor GetCurrentPlayer()
         {
             return playerManager.GetPlayer(currentPlayer);

@@ -2,7 +2,7 @@
 
 namespace KILLGRID.Actors.Players.PlayerActions.States
 {
-    public class IdleState : PlayerActionState
+    public class AwaitingPlayerSelectionState : PlayerActionState
     {
         protected override void OnHover(InteractableComponent interactableComponent)
         {

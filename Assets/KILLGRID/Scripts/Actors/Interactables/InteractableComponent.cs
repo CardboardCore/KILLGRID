@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Attic.Mirror.Actors.Components;
 using HighlightPlus;
+using KILLGRID.Actors.Players;
 using Mirror;
 using UnityEngine;
 
@@ -33,6 +35,7 @@ namespace KILLGRID.Actors.Interactables
     {
         [SerializeField] private InteractableConfig interactableConfig;
 
+        private InteractRequirement[] interactRequirements;
         private bool isSelected;
 
         public InteractableConfig InteractableConfig => interactableConfig;
@@ -41,6 +44,13 @@ namespace KILLGRID.Actors.Interactables
         public event Action HoverExitEvent;
         public event Action SelectEvent;
         public event Action UnSelectEvent;
+
+        protected override void OnInjected()
+        {
+            base.OnInjected();
+
+            interactRequirements = GetComponents<InteractRequirement>();
+        }
 
         [Command(requiresAuthority = false)]
         private void Cmd_SetHighlight(bool isHighlighted) { Rpc_SetHighlight(isHighlighted); }
@@ -129,6 +139,18 @@ namespace KILLGRID.Actors.Interactables
                 UnSelectEvent?.Invoke();
                 Cmd_UnSelect();
             }
+        }
+
+        [Client]
+        public bool CanInteract(PlayerActor playerActor)
+        {
+            if (interactRequirements.Length == 0)
+            {
+                return true;
+            }
+
+            // If only one of the requirements are met, interaction is allowed
+            return interactRequirements.Any(requirement => requirement.CanInteract(playerActor));
         }
     }
 }
