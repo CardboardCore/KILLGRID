@@ -11,12 +11,10 @@ namespace KILLGRID.Actors.Placeables
     [Serializable]
     public class PlaceableActorConfig
     {
-        [SerializeField] private PlaceableType placeableType;
         [SerializeField] private GameObject greenHoloView;
         [SerializeField] private GameObject redHoloView;
         [SerializeField] private GameObject normalView;
 
-        public PlaceableType PlaceableType => placeableType;
         public GameObject GreenHoloView => greenHoloView;
         public GameObject RedHoloView => redHoloView;
         public GameObject NormalView => normalView;

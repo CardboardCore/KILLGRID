@@ -1,8 +1,8 @@
 ﻿using Attic.DI;
 using Attic.Mirror;
 using Attic.Utilities;
-using KILLGRID.Actors.Players;
 using KILLGRID.Actors.TableButtons;
+using KILLGRID.Gameplay.Placeables;
 using Mirror;
 using UnityEngine;
 
@@ -24,11 +24,11 @@ namespace KILLGRID.Gameplay.MemoryBanks
         }
 
         [Server]
-        public MemoryBankComponent Spawn(MemoryBankType memoryBankType)
+        public MemoryBankComponent Spawn(PlaceableType placeableType)
         {
-            if (!memoryBankConfigs.TryGetMemoryBankConfig(memoryBankType, out MemoryBankConfig config))
+            if (!memoryBankConfigs.TryGetMemoryBankConfig(placeableType, out MemoryBankConfig config))
             {
-                Log.Error($"No placeable config found for type {memoryBankType}");
+                Log.Error($"No placeable config found for type {placeableType}");
                 return null;
             }
 

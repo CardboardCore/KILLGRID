@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using KILLGRID.Gameplay.Placeables;
+using UnityEngine;
 
 namespace KILLGRID.Gameplay.MemoryBanks
 {
@@ -7,11 +8,11 @@ namespace KILLGRID.Gameplay.MemoryBanks
     {
         [SerializeField] private MemoryBankConfig[] memoryBankConfigs;
 
-        public bool TryGetMemoryBankConfig(MemoryBankType memoryBankType, out MemoryBankConfig config)
+        public bool TryGetMemoryBankConfig(PlaceableType placeableType, out MemoryBankConfig config)
         {
             foreach (MemoryBankConfig memoryBankConfig in memoryBankConfigs)
             {
-                if (memoryBankConfig.MemoryBankType == memoryBankType)
+                if (memoryBankConfig.PlaceableType == placeableType)
                 {
                     config = memoryBankConfig;
                     return true;

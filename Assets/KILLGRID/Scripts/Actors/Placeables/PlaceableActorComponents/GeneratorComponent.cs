@@ -9,40 +9,10 @@ using UnityEngine.InputSystem;
 
 namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
 {
-    public class GeneratorComponent : PlaceableActorComponent
+    public static class HexGridUtils
     {
-        [Serializable]
-        public struct EnergizedTile : IEquatable<EnergizedTile>
-        {
-            public int x;
-            public int y;
-
-            public static EnergizedTile FromTuple((int x, int y) tuple)
-            {
-                return new EnergizedTile { x = tuple.x, y = tuple.y };
-            }
-
-            public bool Equals(EnergizedTile other)
-            {
-                return x == other.x && y == other.y;
-            }
-
-            public override bool Equals(object obj)
-            {
-                return obj is EnergizedTile other && Equals(other);
-            }
-
-            public override int GetHashCode()
-            {
-                return HashCode.Combine(x, y);
-            }
-        }
-
-        [Inject] private HexGridActor hexGridActor;
-        [Inject] private InputManager inputManager;
-
         // Even-q offset for flat-top hex grid
-        private static readonly (int x, int y)[] EvenQOffsets = new (int, int)[]
+        public static readonly (int x, int y)[] EvenQOffsets = new (int, int)[]
         {
             (0, 1),   // N
             (1, 0),   // NE
@@ -53,7 +23,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
         };
 
         // Odd-q offset for flat-top hex grid
-        private static readonly (int x, int y)[] OddQOffsets = new (int, int)[]
+        public static readonly (int x, int y)[] OddQOffsets = new (int, int)[]
         {
             (0, 1),  // N
             (1, 1),  // NE
@@ -62,8 +32,47 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
             (-1, 0), // SW
             (-1, 1)  // NW
         };
+    }
 
-        private readonly SyncList<EnergizedTile> energizedTiles = new SyncList<EnergizedTile>();
+    // TODO: Put in own file
+    [Serializable]
+    public struct TileCoords : IEquatable<TileCoords>
+    {
+        public int x;
+        public int y;
+
+        public static TileCoords FromTuple((int x, int y) tuple)
+        {
+            return new TileCoords { x = tuple.x, y = tuple.y };
+        }
+
+        public bool Equals(TileCoords other)
+        {
+            return x == other.x && y == other.y;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is TileCoords other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(x, y);
+        }
+
+        public static TileCoords operator +(TileCoords a, TileCoords b)
+        {
+            return new TileCoords { x = a.x + b.x, y = a.y + b.y };
+        }
+    }
+
+    public class GeneratorComponent : PlaceableActorComponent
+    {
+        [Inject] private HexGridActor hexGridActor;
+        [Inject] private InputManager inputManager;
+
+        private readonly SyncList<TileCoords> energizedTiles = new SyncList<TileCoords>();
         private int lastDirectionIndex = 5;
 
         protected override void OnInjected()
@@ -105,19 +114,19 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
             }
 
             int myX = Owner.OccupyingTile.GetGridPosition().x;
-            (int x, int y)[] offsets = (myX % 2 == 0) ? EvenQOffsets : OddQOffsets;
+            (int x, int y)[] offsets = (myX % 2 == 0) ? HexGridUtils.EvenQOffsets : HexGridUtils.OddQOffsets;
 
             for (int i = 1; i <= offsets.Length; i++)
             {
                 int nextIndex = (lastDirectionIndex + i) % offsets.Length;
                 (int x, int y) nextTile = offsets[nextIndex];
 
-                if (energizedTiles.Contains(EnergizedTile.FromTuple(nextTile)))
+                if (energizedTiles.Contains(TileCoords.FromTuple(nextTile)))
                 {
                     continue;
                 }
 
-                if (!TryGetHexTileActorAtOffset(EnergizedTile.FromTuple(nextTile), out HexTileActor hexTile))
+                if (!TryGetHexTileActorAtOffset(TileCoords.FromTuple(nextTile), out HexTileActor hexTile))
                 {
                     continue;
                 }
@@ -126,7 +135,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
 
                 hexTile.SetOwner(Owner.OccupyingTile.OwnerPlayerIndex);
 
-                energizedTiles.Add(EnergizedTile.FromTuple(nextTile));
+                energizedTiles.Add(TileCoords.FromTuple(nextTile));
                 lastDirectionIndex = nextIndex;
 
                 break;
@@ -134,7 +143,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
         }
 
         [Server]
-        private bool TryGetHexTileActorAtOffset(EnergizedTile offset, out HexTileActor hexTile)
+        private bool TryGetHexTileActorAtOffset(TileCoords offset, out HexTileActor hexTile)
         {
             // Assuming Owner has a method to get its current tile position
             (int ownerX, int ownerY) = Owner.OccupyingTile.GetGridPosition();
@@ -172,15 +181,15 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
             // Find tiles counter-clockwise from the last energized tile
             for (int i = 0; i < amount; i++)
             {
-                EnergizedTile tileToDeEnergize = energizedTiles[deEnergizeIndex];
+                TileCoords tileCoordsToDeEnergize = energizedTiles[deEnergizeIndex];
 
-                if (!TryGetHexTileActorAtOffset(tileToDeEnergize, out HexTileActor hexTile))
+                if (!TryGetHexTileActorAtOffset(tileCoordsToDeEnergize, out HexTileActor hexTile))
                 {
-                    Log.Error($"Failed to find hex tile at offset x:{tileToDeEnergize.x} y:{tileToDeEnergize.y} to de-energize.");
+                    Log.Error($"Failed to find hex tile at offset x:{tileCoordsToDeEnergize.x} y:{tileCoordsToDeEnergize.y} to de-energize.");
                     return;
                 }
 
-                Log.Write($"De-energizing tile at offset x:{tileToDeEnergize.x} y:{tileToDeEnergize.y} for player index {Owner.OccupyingTile.OwnerPlayerIndex}.");
+                Log.Write($"De-energizing tile at offset x:{tileCoordsToDeEnergize.x} y:{tileCoordsToDeEnergize.y} for player index {Owner.OccupyingTile.OwnerPlayerIndex}.");
 
                 // De-energize the tile
                 hexTile.SetOwner(-1);
@@ -204,7 +213,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
         protected override void OnServerTurnStartInternal()
         {
             int myX = Owner.OccupyingTile.GetGridPosition().x;
-            (int x, int y)[] offsets = (myX % 2 == 0) ? EvenQOffsets : OddQOffsets;
+            (int x, int y)[] offsets = myX % 2 == 0 ? HexGridUtils.EvenQOffsets : HexGridUtils.OddQOffsets;
 
             if (energizedTiles.Count < offsets.Length)
             {

@@ -88,7 +88,7 @@ namespace KILLGRID.Actors.Players
         }
 
         [Client]
-        public T[] GetAllOwnedTilesWithComponent<T>() where T : PlaceableActorComponent
+        public T[] GetAllOwnedTilesWithPlaceableComponent<T>() where T : PlaceableActorComponent
         {
             List<T> components = new List<T>();
 

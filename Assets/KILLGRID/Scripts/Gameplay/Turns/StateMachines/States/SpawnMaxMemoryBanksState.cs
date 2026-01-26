@@ -4,6 +4,7 @@ using Attic.StateMachines;
 using KILLGRID.Actors.Players;
 using KILLGRID.Actors.TableButtons;
 using KILLGRID.Gameplay.MemoryBanks;
+using KILLGRID.Gameplay.Placeables;
 using KILLGRID.Gameplay.Tables;
 using Mirror;
 using PrisonBreak.Players;
@@ -31,7 +32,7 @@ namespace KILLGRID.Gameplay.Turns.StateMachines.States
 
                     for (int k = 0; k < maxMemoryBanks; k++)
                     {
-                        MemoryBankType memoryBankType = k == 0 ? MemoryBankType.CoreHQ : MemoryBankTypeExtensions.GetRandomNonCoreType();
+                        PlaceableType memoryBankType = k == 0 ? PlaceableType.CoreHQBuilding : PlaceableTypeExtensions.GetRandomNonCoreBuildingType();
                         MemoryBankComponent memoryBankComponent = memoryBankFactory.Spawn(memoryBankType);
 
                         // Place on the table

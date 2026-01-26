@@ -1,5 +1,6 @@
 ﻿using System;
 using KILLGRID.Actors.TableButtons;
+using KILLGRID.Gameplay.Placeables;
 using UnityEngine;
 
 namespace KILLGRID.Gameplay.MemoryBanks
@@ -7,10 +8,10 @@ namespace KILLGRID.Gameplay.MemoryBanks
     [Serializable]
     public class MemoryBankConfig
     {
-        [SerializeField] private MemoryBankType memoryBankType;
+        [SerializeField] private PlaceableType placeableType;
         [SerializeField] private MemoryBankComponent memoryBankPrefab;
 
-        public MemoryBankType MemoryBankType => memoryBankType;
+        public PlaceableType PlaceableType => placeableType;
         public MemoryBankComponent MemoryBankPrefab => memoryBankPrefab;
     }
 }
