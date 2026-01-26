@@ -556,10 +556,33 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2263937871697968433, guid: f964e5d4b4338ac44906b5a3aa3d8e3d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6410707958351463576}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 132614279100173591, guid: f964e5d4b4338ac44906b5a3aa3d8e3d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2611115798817299925}
   m_SourcePrefab: {fileID: 100100000, guid: f964e5d4b4338ac44906b5a3aa3d8e3d, type: 3}
 --- !u!4 &8053160688733192004 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2263937871697968433, guid: f964e5d4b4338ac44906b5a3aa3d8e3d, type: 3}
   m_PrefabInstance: {fileID: 8118175406873936501}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8178165832541638498 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 132614279100173591, guid: f964e5d4b4338ac44906b5a3aa3d8e3d, type: 3}
+  m_PrefabInstance: {fileID: 8118175406873936501}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2611115798817299925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8178165832541638498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b28ebe367d24431e96fea8c80ff44b01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Actors.Placeables.PlaceableActorComponents.DropZoneComponent
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0

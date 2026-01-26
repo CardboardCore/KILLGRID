@@ -3,6 +3,7 @@ using Attic.StateMachines;
 using KILLGRID.Actors.Players;
 using KILLGRID.Actors.TableButtons;
 using KILLGRID.Gameplay.MemoryBanks;
+using KILLGRID.Gameplay.Placeables;
 using KILLGRID.Gameplay.Tables;
 
 namespace KILLGRID.Gameplay.Turns.StateMachines.States
@@ -27,8 +28,8 @@ namespace KILLGRID.Gameplay.Turns.StateMachines.States
 
             for (int i = 0; i < banksToRefill; i++)
             {
-                MemoryBankType memoryBankType = MemoryBankTypeExtensions.GetRandomNonCoreType();
-                MemoryBankComponent memoryBankComponent = memoryBankFactory.Spawn(memoryBankType);
+                PlaceableType placeableType = PlaceableTypeExtensions.GetRandomNonCoreType();
+                MemoryBankComponent memoryBankComponent = memoryBankFactory.Spawn(placeableType);
 
                 // Place on the table
                 memoryBankTableSpots.PlaceMemoryBankAtRandomFreeSpot(memoryBankComponent);

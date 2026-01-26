@@ -13,9 +13,15 @@ MonoBehaviour:
   m_Name: MemoryBankConfigs
   m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Gameplay.MemoryBanks.MemoryBankConfigs
   memoryBankConfigs:
-  - memoryBankType: 0
+  - placeableType: 0
     memoryBankPrefab: {fileID: 8976227589715563727, guid: a31be44f241fe9443b23817780f8e204, type: 3}
-  - memoryBankType: 1
+  - placeableType: 1
     memoryBankPrefab: {fileID: 6997211904171706406, guid: 30b073d88861f5f409b72880d22c6def, type: 3}
-  - memoryBankType: 2
+  - placeableType: 2
     memoryBankPrefab: {fileID: 6409512990730603269, guid: f0a880ab7e828ac46964f9b5c12b7859, type: 3}
+  - placeableType: 10
+    memoryBankPrefab: {fileID: 8008428685389873384, guid: 28eef37321955354ba344d12523334cf, type: 3}
+  - placeableType: 11
+    memoryBankPrefab: {fileID: 7574329767413763504, guid: 1db6187e1d8baf543b078662c0a7c367, type: 3}
+  - placeableType: 12
+    memoryBankPrefab: {fileID: 783042841657103061, guid: 98be5b45731f72f4b8d856644fc07fb2, type: 3}

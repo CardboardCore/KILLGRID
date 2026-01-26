@@ -37,17 +37,31 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
             isSpawning = false;
             placeableActor = null;
 
-            // TODO: Based on memory bank type, show different highlights on valid tiles
-
-            // Get all build zone components for this player and highlight valid tiles
             playerOwnedTilesComponent = owningStateMachine.Owner.GetComponent<PlayerOwnedTilesComponent>();
 
-            BuildZoneComponent[] buildZoneComponents = playerOwnedTilesComponent.GetAllOwnedTilesWithPlaceableComponent<BuildZoneComponent>();
-
-            foreach (BuildZoneComponent buildZoneComponent in buildZoneComponents)
+            if (memoryBankComponent.PlaceableConfig.Type.IsBuilding())
             {
-                buildZoneComponent.RequestShowBuildZone();
+                BuildZoneComponent[] buildZoneComponents = playerOwnedTilesComponent.GetAllOwnedTilesWithPlaceableComponent<BuildZoneComponent>();
+
+                foreach (BuildZoneComponent buildZoneComponent in buildZoneComponents)
+                {
+                    buildZoneComponent.RequestShowBuildZone();
+                }
             }
+
+            if (memoryBankComponent.PlaceableConfig.Type.IsUnit())
+            {
+                DropZoneComponent[] dropZoneComponents = playerOwnedTilesComponent.GetAllOwnedTilesWithPlaceableComponent<DropZoneComponent>();
+
+                foreach (DropZoneComponent dropZoneComponent in dropZoneComponents)
+                {
+                    dropZoneComponent.RequestShowDropZone();
+                }
+            }
+
+            // TODO: Based on memory bank type, show different highlights on valid tiles (via either DropZoneComponent or BuildZoneComponent)
+
+            // Get all build zone components for this player and highlight valid tiles
         }
 
         protected override void OnHover(InteractableComponent interactableComponent)
@@ -84,35 +98,37 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
                 placeablesFactory.PlaceableSpawnedEvent += OnPlaceableSpawned;
                 placeablesFactory.RequestSpawn(owningStateMachine.Owner, memoryBankComponent.PlaceableConfig.Type, hexTileActor);
+            }
 
-                void OnPlaceableSpawned(PlaceableActor placeable)
-                {
-                    Log.Write("Placeable hologram spawned.");
+            return;
 
-                    placeablesFactory.PlaceableSpawnedEvent -= OnPlaceableSpawned;
+            void OnPlaceableSpawned(PlaceableActor placeable)
+            {
+                Log.Write("Placeable hologram spawned.");
 
-                    placeable.WhenSpawned(() => {
+                placeablesFactory.PlaceableSpawnedEvent -= OnPlaceableSpawned;
 
-                        Log.Write("Configuring placeable hologram...");
+                placeable.WhenSpawned(() => {
 
-                        placeable.RequestTakeOwnership(owningStateMachine.Owner);
+                    Log.Write("Configuring placeable hologram...");
 
-                        placeable.ShowAsGreenHologram(true);
-                        placeable.transform.position = hexTileActor.transform.position;
+                    placeable.RequestTakeOwnership(owningStateMachine.Owner);
 
-                        UpdatePlaceableActor(placeable);
+                    placeable.ShowAsGreenHologram(true);
+                    placeable.transform.position = hexTileActor.transform.position;
 
-                        placeableActor = placeable;
-                        isSpawning = false;
-                    });
-                }
+                    UpdatePlaceableActor(placeable);
+
+                    placeableActor = placeable;
+                    isSpawning = false;
+                });
             }
 
             void UpdatePlaceableActor(PlaceableActor placeable)
             {
                 hexTileActor.MoveActorToTile(placeable);
 
-                if (memoryBankComponent.PlaceableConfig.Type == PlaceableType.CoreHQ || hexTileActor.IsEligibleForPlacement)
+                if (memoryBankComponent.PlaceableConfig.Type == PlaceableType.CoreHQBuilding || hexTileActor.IsEligibleForPlacement)
                 {
                     placeable.ShowAsGreenHologram(true);
                     canPlace = true;
@@ -207,15 +223,29 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
                         placeableActor.ShowAsNormal(true);
 
-                        BuildZoneComponent[] buildZoneComponents = playerOwnedTilesComponent.GetAllOwnedTilesWithPlaceableComponent<BuildZoneComponent>();
-
-                        foreach (BuildZoneComponent buildZoneComponent in buildZoneComponents)
+                        if (memoryBankComponent.PlaceableConfig.Type.IsBuilding())
                         {
-                            buildZoneComponent.RequestHideBuildZone();
+                            BuildZoneComponent[] buildZoneComponents = playerOwnedTilesComponent.GetAllOwnedTilesWithPlaceableComponent<BuildZoneComponent>();
+
+                            foreach (BuildZoneComponent buildZoneComponent in buildZoneComponents)
+                            {
+                                buildZoneComponent.RequestHideBuildZone();
+                            }
+                        }
+
+                        if (memoryBankComponent.PlaceableConfig.Type.IsUnit())
+                        {
+                            DropZoneComponent[] dropZoneComponents = playerOwnedTilesComponent.GetAllOwnedTilesWithPlaceableComponent<DropZoneComponent>();
+
+                            foreach (DropZoneComponent dropZoneComponent in dropZoneComponents)
+                            {
+                                dropZoneComponent.RequestHideDropZone();
+                            }
                         }
 
                         placeableActor = null;
                         memoryBankComponent = null;
+                        playerOwnedTilesComponent = null;
 
                         // TODO: Somehow make sure all data is synced before going to next state
                         invokeWrapper.Invoke(ToState<CheckEnergyState>, 1f);

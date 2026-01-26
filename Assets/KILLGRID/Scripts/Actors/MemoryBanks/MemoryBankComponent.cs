@@ -31,6 +31,8 @@ namespace KILLGRID.Actors.TableButtons
         {
             base.OnInjected();
 
+            // TODO: Pass on placeable type via initialization instead of hardcoding it
+            // Unable to sync current placeable config, so we cache it on injection
             if (!placeablesFactory.PlaceablesConfig.TryGetPlaceableConfig(placeableType, out placeableConfig))
             {
                 Log.Error($"No placeable config found for type {placeableType}");

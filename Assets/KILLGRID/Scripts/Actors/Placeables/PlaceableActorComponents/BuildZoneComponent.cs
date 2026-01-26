@@ -89,7 +89,9 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
                         if (TryGetHexTileActorAtOffset(offset, out HexTileActor hexTile))
                         {
                             if (!buildableTiles.Contains(offset))
+                            {
                                 buildableTiles.Add(offset);
+                            }
                         }
 
                         int parity = (ownerX + cx) % 2;
