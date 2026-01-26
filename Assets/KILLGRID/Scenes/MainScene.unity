@@ -1264,7 +1264,7 @@ MonoBehaviour:
   syncInterval: 0
   playerActorOnePrefab: {fileID: 5823286788996201784, guid: 0a6a00bf44e7bd34a924a4b739f9db84, type: 3}
   playerActorTwoPrefab: {fileID: 2473316858261374833, guid: 17d71056f7be4bd4492d06669b0f9d9c, type: 3}
-  awaitFullGame: 0
+  awaitFullGame: 1
 --- !u!114 &1231911516
 MonoBehaviour:
   m_ObjectHideFlags: 0

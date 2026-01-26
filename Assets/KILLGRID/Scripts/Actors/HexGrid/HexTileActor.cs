@@ -58,9 +58,11 @@ namespace KILLGRID.Actors.HexGrid
         [SyncVar] private int gridCoordinatesY;
 
         [SyncVar] private uint placedActorNetId;
+        [SyncVar] private bool isInBuildZone;
 
         public int OwnerPlayerIndex => ownerPlayerIndex;
         public bool IsOccupied => isOccupied;
+        public bool IsEligibleForPlacement => !isOccupied && isInBuildZone;
 
         private void OnDrawGizmosSelected()
         {
@@ -95,7 +97,7 @@ namespace KILLGRID.Actors.HexGrid
         private void UpdatePosition()
         {
             float targetFloatY = ownerPlayerIndex == -1 ? initialFloatY : initialFloatY + config.FloatingHeight;
-            transform.DOMoveY(targetFloatY, config.FloatingDuration);
+            transform.DOMoveY(targetFloatY, config.FloatingDuration).SetEase(config.FloatingEase);
         }
 
         [Client]
@@ -158,9 +160,10 @@ namespace KILLGRID.Actors.HexGrid
         }
 
         [Command(requiresAuthority = false)]
-        public void ShowBuildZone(bool show)
+        public void ShowBuildZone(bool inBuildZone)
         {
-            Rpc_ShowBuildZone(show);
+            isInBuildZone = inBuildZone;
+            Rpc_ShowBuildZone(inBuildZone);
         }
 
         [Client]
@@ -169,8 +172,8 @@ namespace KILLGRID.Actors.HexGrid
             // TODO: This happens sometimes, and the next tile move will fix it, but should investigate further
             if (!actor.isOwned)
             {
-                Log.Error($"Trying to move actor {actor.name} that is not owned by this client.");
-                return;
+                Log.Warn($"Trying to move actor {actor.name} that is not owned by this client.");
+                // return;
             }
 
             actor.transform.DOMove(transform.position, 0.1f);

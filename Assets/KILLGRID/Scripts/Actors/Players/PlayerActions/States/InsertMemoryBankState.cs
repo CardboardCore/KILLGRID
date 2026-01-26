@@ -25,6 +25,8 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
         private PlayerOwnedTilesComponent playerOwnedTilesComponent;
 
+        private bool canPlace;
+
         protected override void OnEnter()
         {
             base.OnEnter();
@@ -46,18 +48,6 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
             {
                 buildZoneComponent.RequestShowBuildZone();
             }
-        }
-
-        protected override void OnExit()
-        {
-            BuildZoneComponent[] buildZoneComponents = playerOwnedTilesComponent.GetAllOwnedTilesWithPlaceableComponent<BuildZoneComponent>();
-
-            foreach (BuildZoneComponent buildZoneComponent in buildZoneComponents)
-            {
-                buildZoneComponent.RequestHideBuildZone();
-            }
-
-            base.OnExit();
         }
 
         protected override void OnHover(InteractableComponent interactableComponent)
@@ -84,16 +74,7 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
             if (placeableActor)
             {
-                hexTileActor.MoveActorToTile(placeableActor);
-
-                if (hexTileActor.IsOccupied)
-                {
-                    placeableActor.ShowAsRedHologram(true);
-                }
-                else
-                {
-                    placeableActor.ShowAsGreenHologram(true);
-                }
+                UpdatePlaceableActor(placeableActor);
             }
             else if (!isSpawning)
             {
@@ -119,9 +100,27 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
                         placeable.ShowAsGreenHologram(true);
                         placeable.transform.position = hexTileActor.transform.position;
 
+                        UpdatePlaceableActor(placeable);
+
                         placeableActor = placeable;
                         isSpawning = false;
                     });
+                }
+            }
+
+            void UpdatePlaceableActor(PlaceableActor placeable)
+            {
+                hexTileActor.MoveActorToTile(placeable);
+
+                if (memoryBankComponent.PlaceableConfig.Type == PlaceableType.CoreHQ || hexTileActor.IsEligibleForPlacement)
+                {
+                    placeable.ShowAsGreenHologram(true);
+                    canPlace = true;
+                }
+                else
+                {
+                    placeable.ShowAsRedHologram(true);
+                    canPlace = false;
                 }
             }
         }
@@ -208,6 +207,12 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
                         placeableActor.ShowAsNormal(true);
 
+                        BuildZoneComponent[] buildZoneComponents = playerOwnedTilesComponent.GetAllOwnedTilesWithPlaceableComponent<BuildZoneComponent>();
+
+                        foreach (BuildZoneComponent buildZoneComponent in buildZoneComponents)
+                        {
+                            buildZoneComponent.RequestHideBuildZone();
+                        }
 
                         placeableActor = null;
                         memoryBankComponent = null;

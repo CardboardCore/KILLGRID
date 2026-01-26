@@ -74,9 +74,9 @@ MonoBehaviour:
     neutralMaterial: {fileID: 2100000, guid: 721b4ecd0a1b68f4d8e3e6304ce0b2f2, type: 2}
     playerOneMaterial: {fileID: 2100000, guid: 01f1e5d3969d1e245920b2d9b8229092, type: 2}
     playerTwoMaterial: {fileID: 2100000, guid: bd4aaad240e5fc441ace1ecfbbd24a68, type: 2}
-    floatingHeight: 0.1
+    floatingHeight: 0.05
     floatingDuration: 0.2
-    floatingEase: 4
+    floatingEase: 10
 --- !u!114 &2472580531256722738
 MonoBehaviour:
   m_ObjectHideFlags: 0
