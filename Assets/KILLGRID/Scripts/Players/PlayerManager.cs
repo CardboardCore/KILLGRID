@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Attic.DI;
 using Attic.Utilities;
+using KILLGRID.Actors.PlayerMonitors;
 using Mirror;
 using KILLGRID.Actors.Players;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace PrisonBreak.Players
     {
         public int ConnectionId;
         public PlayerActor Player;
+        public string Name;
     }
 
     [Injectable]
@@ -20,6 +22,10 @@ namespace PrisonBreak.Players
         [Header("References")]
         [SerializeField] private PlayerActor playerActorOnePrefab;
         [SerializeField] private PlayerActor playerActorTwoPrefab;
+
+        [Header("Monitors")]
+        [SerializeField] private PlayerMonitorComponent playerOneMonitor;
+        [SerializeField] private PlayerMonitorComponent playerTwoMonitor;
 
         [Header("Settings")]
         [SerializeField] private bool awaitFullGame;
@@ -69,6 +75,10 @@ namespace PrisonBreak.Players
         private void OnPlayerEntryAdded(int index)
         {
             PlayerEntry entry = playerEntries[index];
+
+            PlayerMonitorComponent playerMonitor = index == 0 ? playerOneMonitor : playerTwoMonitor;
+            entry.Player.SetMonitor(playerMonitor, entry.Name);
+
             PlayerAddedEvent?.Invoke(entry);
         }
 
@@ -94,7 +104,8 @@ namespace PrisonBreak.Players
             PlayerEntry playerEntry = new PlayerEntry
             {
                 ConnectionId = conn.connectionId,
-                Player = playerActor
+                Player = playerActor,
+                Name = playerEntries.Count == 0 ? "<Player 1>" : "<Player 2>" // TODO: Replace with actual player names
             };
 
             playerEntries.Add(playerEntry);

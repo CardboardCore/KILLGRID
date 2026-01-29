@@ -9,12 +9,14 @@ using KILLGRID.Actors.Placeables;
 using KILLGRID.Actors.Placeables.PlaceableActorComponents;
 using KILLGRID.Actors.TableButtons;
 using KILLGRID.Gameplay.Placeables;
+using KILLGRID.Input;
 using UnityEngine;
 
 namespace KILLGRID.Actors.Players.PlayerActions.States
 {
     public class InsertMemoryBankState : PlayerActionState
     {
+        [Inject] private InputManager inputManager;
         [Inject] private PlaceablesFactory placeablesFactory;
         [Inject] private ActorCleaner actorCleaner;
         [Inject] private InvokeWrapper invokeWrapper;
@@ -30,6 +32,8 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
         protected override void OnEnter()
         {
             base.OnEnter();
+
+            inputManager.Player.Enable();
 
             PlayerInteractComponent playerInteractComponent = owningStateMachine.Owner.GetComponent<PlayerInteractComponent>();
             memoryBankComponent = playerInteractComponent.CurrentHighlightedInteractableComponent.GetComponent<MemoryBankComponent>();
@@ -246,6 +250,8 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
                         placeableActor = null;
                         memoryBankComponent = null;
                         playerOwnedTilesComponent = null;
+
+                        inputManager.Player.Disable();
 
                         // TODO: Somehow make sure all data is synced before going to next state
                         invokeWrapper.Invoke(ToState<CheckEnergyState>, 1f);

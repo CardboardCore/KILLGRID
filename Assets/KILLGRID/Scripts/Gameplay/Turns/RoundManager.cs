@@ -14,6 +14,8 @@ namespace KILLGRID.Gameplay.Turns
         [SyncVar] private int currentRound = 0;
         [SyncVar] private int currentPlayer = 0;
 
+        public int CurrentRound => currentRound;
+
         protected override void OnInjected()
         {
 

@@ -15,7 +15,6 @@ namespace KILLGRID.Gameplay.Turns.StateMachines.States
             PlayerActor currentPlayer = roundManager.GetCurrentPlayer();
 
             currentPlayer.GetComponent<PlayerOwnedTilesComponent>().OnTurnStart();
-            currentPlayer.EnableInput();
 
             // Reset troops, resources, etc. for the new turn
             ToNextState();

@@ -15,7 +15,6 @@ namespace KILLGRID.Gameplay.Turns.StateMachines.States
             PlayerActor currentPlayer = roundManager.GetCurrentPlayer();
 
             currentPlayer.GetComponent<PlayerOwnedTilesComponent>().OnTurnEnd();
-            currentPlayer.DisableInput();
 
             roundManager.EndPlayerTurn();
 

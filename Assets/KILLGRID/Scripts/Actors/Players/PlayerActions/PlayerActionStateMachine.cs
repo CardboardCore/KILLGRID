@@ -29,6 +29,7 @@ namespace KILLGRID.Actors.Players.PlayerActions
 
         public void EndActionPhase()
         {
+            Owner.MyMonitor.SetState("Awaiting Opponent");
             ActionPhaseEndedEvent?.Invoke();
         }
     }
