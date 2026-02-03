@@ -61,6 +61,8 @@ namespace KILLGRID.Actors.Players
                 if (NetworkClient.spawned.TryGetValue(netId, out NetworkIdentity identity))
                 {
                     MemoryBankComponent memoryBank = identity.GetComponent<MemoryBankComponent>();
+                    memoryBank.SetCanUse(totalPlayerEnergy);
+
                     memoryBanks[i] = memoryBank;
                 }
             }

@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 4386865140307655712}
   - component: {fileID: 6146356278595585922}
   - component: {fileID: 1665000684954907936}
+  - component: {fileID: 2035855629717974861}
   m_Layer: 0
   m_Name: PlayerActor
   m_TagString: Untagged
@@ -334,6 +335,21 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   maxMemoryBanks: 4
+--- !u!114 &2035855629717974861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786128614114064540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b91a1ac2f6460c84903b4d15727c02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Actors.Players.PlayerHealthComponent
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!1 &8733461336348723314
 GameObject:
   m_ObjectHideFlags: 0

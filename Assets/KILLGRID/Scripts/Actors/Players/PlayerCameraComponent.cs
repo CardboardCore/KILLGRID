@@ -1,10 +1,9 @@
 ﻿using System;
-using Attic.Cameras;
 using Attic.Cameras.Transitions;
 using Attic.Cameras.VirtualCameras;
 using Attic.DI;
 using Attic.Mirror.Actors.Components;
-using Attic.Utilities;
+using Mirror;
 using UnityEngine;
 
 namespace KILLGRID.Actors.Players
@@ -93,6 +92,13 @@ namespace KILLGRID.Actors.Players
 
             PlayerCameraStepData stepData = cameraStepConfig.Steps[stepIndex];
             virtualCameraManager.DoTransition(stepData.CameraId, instant ? TransitionOptions.Instant : TransitionOptions.None, 0.2f);
+        }
+
+        [Client]
+        public void ResetCameraStep()
+        {
+            currentStepIndex = 0;
+            SetCameraStep(currentStepIndex);
         }
     }
 }

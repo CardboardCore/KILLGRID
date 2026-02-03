@@ -21,6 +21,8 @@ namespace KILLGRID.Actors.TableButtons
 
         [Header("Settings")]
         [SerializeField] private PlaceableType placeableType;
+        [SerializeField] private Color usableColor;
+        [SerializeField] private Color unusableColor;
 
         private PlaceableConfig placeableConfig;
         private TableSpot myTableSpot;
@@ -62,6 +64,21 @@ namespace KILLGRID.Actors.TableButtons
         {
             Cmd_Consume();
             // TODO: Change to playing animations and use "callCommand" chain to make it feel direct
+        }
+
+        [Client]
+        public void SetCanUse(int energy)
+        {
+            if (placeableConfig.Cost <= energy)
+            {
+                nameText.color = usableColor;
+                costText.color = usableColor;
+            }
+            else
+            {
+                nameText.color = unusableColor;
+                costText.color = unusableColor;
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace KILLGRID.Actors.Players.PlayerActions
     /// </summary>
     public class PlayerActionStateMachine : StateMachine
     {
-        public PlayerActor Owner { get; private set; }
+        public PlayerActor Owner { get; }
 
         public event Action ActionPhaseEndedEvent;
 
@@ -29,6 +29,7 @@ namespace KILLGRID.Actors.Players.PlayerActions
 
         public void EndActionPhase()
         {
+            Owner.MyMonitor.SetState("Awaiting Opponent");
             ActionPhaseEndedEvent?.Invoke();
         }
     }

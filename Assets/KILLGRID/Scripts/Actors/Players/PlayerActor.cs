@@ -1,15 +1,14 @@
 using Attic.Cameras.VirtualCameras;
 using Attic.DI;
-using KILLGRID.Input;
 using UnityEngine;
 using Attic.Mirror.Actors;
+using KILLGRID.Actors.PlayerMonitors;
 using Mirror;
 
 namespace KILLGRID.Actors.Players
 {
     public class PlayerActor : Actor
     {
-        [Inject] private InputManager inputManager;
         [Inject] private VirtualCameraManager virtualCameraManager;
 
         [SerializeField] private GameObject viewObject;
@@ -18,6 +17,7 @@ namespace KILLGRID.Actors.Players
 
         public int PlayerIndex => playerIndex;
         public PlayerInteractComponent PlayerInteractComponent { get; private set; }
+        public PlayerMonitorComponent MyMonitor { get; private set; }
 
         protected override void OnInjected()
         {
@@ -28,34 +28,17 @@ namespace KILLGRID.Actors.Players
             PlayerInteractComponent = GetComponent<PlayerInteractComponent>();
         }
 
-        [TargetRpc]
-        private void Rpc_EnableInput(NetworkConnectionToClient target)
-        {
-            inputManager.Player.Enable();
-        }
-
-        [TargetRpc]
-        private void Rpc_DisableInput(NetworkConnectionToClient target)
-        {
-
-        }
-
         [Server]
         public void SetPlayerIndex(int playerIndex)
         {
             this.playerIndex = playerIndex;
         }
 
-        [Server]
-        public void EnableInput()
+        [Client]
+        public void SetMonitor(PlayerMonitorComponent monitor, string playerName)
         {
-            Rpc_EnableInput(connectionToClient);
-        }
-
-        [Server]
-        public void DisableInput()
-        {
-            Rpc_DisableInput(connectionToClient);
+            MyMonitor = monitor;
+            MyMonitor.SetPlayerName(playerName);
         }
     }
 }

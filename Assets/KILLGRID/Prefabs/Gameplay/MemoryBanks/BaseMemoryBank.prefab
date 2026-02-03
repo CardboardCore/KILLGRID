@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 6455401379427291327}
   - component: {fileID: 2016709982535470594}
   m_Layer: 0
-  m_Name: BuildingMemoryBank
+  m_Name: BaseMemoryBank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -621,6 +621,8 @@ MonoBehaviour:
   nameText: {fileID: 2384430034225225663}
   costText: {fileID: 6443129642819399762}
   placeableType: 0
+  usableColor: {r: 1, g: 1, b: 1, a: 1}
+  unusableColor: {r: 0.5633422, g: 0.20574895, b: 0.20574895, a: 1}
 --- !u!114 &2016709982535470594
 MonoBehaviour:
   m_ObjectHideFlags: 0
