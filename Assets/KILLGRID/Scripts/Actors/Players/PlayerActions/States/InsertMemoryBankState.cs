@@ -254,7 +254,7 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
                         inputManager.Player.Disable();
 
                         // TODO: Somehow make sure all data is synced before going to next state
-                        invokeWrapper.Invoke(ToState<CheckEnergyState>, 1f);
+                        invokeWrapper.Invoke(ToState<CheckEnergyState>, 0.5f);
                     }
 
                     break;

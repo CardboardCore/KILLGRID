@@ -11,6 +11,7 @@ namespace KILLGRID.Actors.PlayerMonitors
     {
         [SerializeField] private TextMeshProUGUI playerNameText;
         [SerializeField] private TextMeshProUGUI turnText;
+        [SerializeField] private TextMeshProUGUI healthText;
         [SerializeField] private TextMeshProUGUI energyText;
         [SerializeField] private TextMeshProUGUI stateText;
         [SerializeField] private TextMeshProUGUI roundText;
@@ -77,6 +78,20 @@ namespace KILLGRID.Actors.PlayerMonitors
         public void SetRoundNumber(int roundNumber)
         {
             roundText.text = $"Round: {roundNumber}";
+        }
+
+        [Client]
+        public void SetPlayerHealth(int health)
+        {
+            string healthTextValue = "Health: ";
+
+            for (int i = 0; i < health; i++)
+            {
+                // TODO: Get a little icon representing health in the text
+                healthTextValue += "O";
+            }
+
+            healthText.text = healthTextValue;
         }
     }
 }

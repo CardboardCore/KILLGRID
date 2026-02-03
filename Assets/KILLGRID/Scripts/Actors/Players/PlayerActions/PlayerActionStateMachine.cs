@@ -9,7 +9,7 @@ namespace KILLGRID.Actors.Players.PlayerActions
     /// </summary>
     public class PlayerActionStateMachine : StateMachine
     {
-        public PlayerActor Owner { get; private set; }
+        public PlayerActor Owner { get; }
 
         public event Action ActionPhaseEndedEvent;
 

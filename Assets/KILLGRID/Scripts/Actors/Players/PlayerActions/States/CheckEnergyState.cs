@@ -55,7 +55,7 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
                 // Else, go to awaiting player selection state
                 ToState<AwaitingPlayerSelectionState>();
-            }, 1f);
+            }, .1f);
         }
 
         private void EndActionPhase()

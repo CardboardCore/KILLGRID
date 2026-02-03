@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Opponent's Turn
+  m_text: Waiting for Player...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2c9128cb5047c6c4e9fca5f015ec8058, type: 2}
   m_sharedMaterial: {fileID: -9120741399796610219, guid: 2c9128cb5047c6c4e9fca5f015ec8058, type: 2}
@@ -974,6 +974,7 @@ MonoBehaviour:
   syncInterval: 0
   playerNameText: {fileID: 8748919422007036225}
   turnText: {fileID: 3315457188391050267}
+  healthText: {fileID: 3422029482907539327}
   energyText: {fileID: 1978728753822393488}
   stateText: {fileID: 6807778676544209933}
   roundText: {fileID: 2846848143377147670}
@@ -1416,7 +1417,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Charging Energy...
+  m_text: Waiting for Player...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2c9128cb5047c6c4e9fca5f015ec8058, type: 2}
   m_sharedMaterial: {fileID: -9120741399796610219, guid: 2c9128cb5047c6c4e9fca5f015ec8058, type: 2}
