@@ -1396,9 +1396,9 @@ MonoBehaviour:
   syncInterval: 0
   playerActorOnePrefab: {fileID: 5823286788996201784, guid: 0a6a00bf44e7bd34a924a4b739f9db84, type: 3}
   playerActorTwoPrefab: {fileID: 2473316858261374833, guid: 17d71056f7be4bd4492d06669b0f9d9c, type: 3}
-  playerOneMonitor: {fileID: 1945396960}
-  playerTwoMonitor: {fileID: 1116604103}
-  awaitFullGame: 0
+  oneMonitor: {fileID: 1945396960}
+  twoMonitor: {fileID: 1116604103}
+  awaitFullGame: 1
 --- !u!114 &1231911516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1971,6 +1971,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 519213073902384650, guid: 7a711a9141c6c504984525c5347dad49, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.3216
+      objectReference: {fileID: 0}
+    - target: {fileID: 1471037755951854596, guid: 7a711a9141c6c504984525c5347dad49, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.3216
+      objectReference: {fileID: 0}
+    - target: {fileID: 1790839981580023874, guid: 7a711a9141c6c504984525c5347dad49, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.3216
+      objectReference: {fileID: 0}
+    - target: {fileID: 1847116826667506497, guid: 7a711a9141c6c504984525c5347dad49, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.3216
+      objectReference: {fileID: 0}
+    - target: {fileID: 3390115565194221963, guid: 7a711a9141c6c504984525c5347dad49, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.3216
+      objectReference: {fileID: 0}
     - target: {fileID: 3482907987518882447, guid: 7a711a9141c6c504984525c5347dad49, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.375
