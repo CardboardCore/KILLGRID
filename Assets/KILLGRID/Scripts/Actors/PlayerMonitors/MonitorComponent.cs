@@ -7,8 +7,9 @@ using UnityEngine.UI;
 
 namespace KILLGRID.Actors.PlayerMonitors
 {
-    public class PlayerMonitorComponent : ActorComponent
+    public class MonitorComponent : ActorComponent
     {
+        [Header("UI References")]
         [SerializeField] private TextMeshProUGUI playerNameText;
         [SerializeField] private TextMeshProUGUI turnText;
         [SerializeField] private TextMeshProUGUI healthText;
@@ -16,6 +17,9 @@ namespace KILLGRID.Actors.PlayerMonitors
         [SerializeField] private TextMeshProUGUI stateText;
         [SerializeField] private TextMeshProUGUI roundText;
         [SerializeField] private Button endTurnButton;
+
+        // [Header("References")]
+        [SerializeField] private MonitorHealthLightComponent[] healthLights;
 
         public event Action PlayerEndTurnPressedEvent;
 
@@ -89,6 +93,11 @@ namespace KILLGRID.Actors.PlayerMonitors
             {
                 // TODO: Get a little icon representing health in the text
                 healthTextValue += "O";
+            }
+
+            for (int i = 0; i < healthLights.Length; i++)
+            {
+                healthLights[i].SetIsLit(i < health);
             }
 
             healthText.text = healthTextValue;

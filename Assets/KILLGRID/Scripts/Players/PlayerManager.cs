@@ -24,8 +24,8 @@ namespace PrisonBreak.Players
         [SerializeField] private PlayerActor playerActorTwoPrefab;
 
         [Header("Monitors")]
-        [SerializeField] private PlayerMonitorComponent playerOneMonitor;
-        [SerializeField] private PlayerMonitorComponent playerTwoMonitor;
+        [SerializeField] private MonitorComponent oneMonitor;
+        [SerializeField] private MonitorComponent twoMonitor;
 
         [Header("Settings")]
         [SerializeField] private bool awaitFullGame;
@@ -76,8 +76,8 @@ namespace PrisonBreak.Players
         {
             PlayerEntry entry = playerEntries[index];
 
-            PlayerMonitorComponent playerMonitor = index == 0 ? playerOneMonitor : playerTwoMonitor;
-            entry.Player.SetMonitor(playerMonitor, entry.Name);
+            MonitorComponent monitor = index == 0 ? oneMonitor : twoMonitor;
+            entry.Player.SetMonitor(monitor, entry.Name);
 
             PlayerAddedEvent?.Invoke(entry);
         }

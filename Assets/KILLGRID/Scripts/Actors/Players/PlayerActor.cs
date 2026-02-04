@@ -17,7 +17,7 @@ namespace KILLGRID.Actors.Players
 
         public int PlayerIndex => playerIndex;
         public PlayerInteractComponent PlayerInteractComponent { get; private set; }
-        public PlayerMonitorComponent MyMonitor { get; private set; }
+        public MonitorComponent MyMonitor { get; private set; }
 
         protected override void OnInjected()
         {
@@ -35,7 +35,7 @@ namespace KILLGRID.Actors.Players
         }
 
         [Client]
-        public void SetMonitor(PlayerMonitorComponent monitor, string playerName)
+        public void SetMonitor(MonitorComponent monitor, string playerName)
         {
             MyMonitor = monitor;
             MyMonitor.SetPlayerName(playerName);
