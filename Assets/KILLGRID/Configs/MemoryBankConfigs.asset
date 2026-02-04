@@ -19,6 +19,8 @@ MonoBehaviour:
     memoryBankPrefab: {fileID: 6997211904171706406, guid: 30b073d88861f5f409b72880d22c6def, type: 3}
   - placeableType: 2
     memoryBankPrefab: {fileID: 6409512990730603269, guid: f0a880ab7e828ac46964f9b5c12b7859, type: 3}
+  - placeableType: 3
+    memoryBankPrefab: {fileID: 6357422722737753209, guid: 48bf2991a66614c4bb479084772266ac, type: 3}
   - placeableType: 10
     memoryBankPrefab: {fileID: 8008428685389873384, guid: 28eef37321955354ba344d12523334cf, type: 3}
   - placeableType: 11

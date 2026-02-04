@@ -1398,7 +1398,7 @@ MonoBehaviour:
   playerActorTwoPrefab: {fileID: 2473316858261374833, guid: 17d71056f7be4bd4492d06669b0f9d9c, type: 3}
   oneMonitor: {fileID: 1945396960}
   twoMonitor: {fileID: 1116604103}
-  awaitFullGame: 1
+  awaitFullGame: 0
 --- !u!114 &1231911516
 MonoBehaviour:
   m_ObjectHideFlags: 0

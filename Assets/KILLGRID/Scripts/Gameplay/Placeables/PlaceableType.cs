@@ -8,6 +8,7 @@ namespace KILLGRID.Gameplay.Placeables
         CoreHQBuilding = 0,
         GeneratorBuilding = 1,
         UplinkBuilding = 2,
+        SubstationBuilding = 3,
 
         // Units
         RunnerUnit = 10,
@@ -19,7 +20,7 @@ namespace KILLGRID.Gameplay.Placeables
     {
         private static readonly PlaceableType[] NonCoreBuildingTypes = new[]
         {
-            PlaceableType.GeneratorBuilding, PlaceableType.UplinkBuilding
+            PlaceableType.GeneratorBuilding, PlaceableType.UplinkBuilding, PlaceableType.SubstationBuilding
         };
 
         private static readonly PlaceableType[] UnitTypes = new[]
@@ -29,12 +30,12 @@ namespace KILLGRID.Gameplay.Placeables
 
         private static readonly PlaceableType[] BuildingTypes = new[]
         {
-            PlaceableType.CoreHQBuilding, PlaceableType.GeneratorBuilding, PlaceableType.UplinkBuilding
+            PlaceableType.CoreHQBuilding, PlaceableType.GeneratorBuilding, PlaceableType.UplinkBuilding, PlaceableType.SubstationBuilding
         };
 
         public static bool IsBuilding(this PlaceableType placeableType)
         {
-            return placeableType is PlaceableType.CoreHQBuilding or PlaceableType.GeneratorBuilding or PlaceableType.UplinkBuilding;
+            return placeableType is PlaceableType.CoreHQBuilding or PlaceableType.GeneratorBuilding or PlaceableType.UplinkBuilding or PlaceableType.SubstationBuilding;
         }
 
         public static bool IsUnit(this PlaceableType placeableType)
