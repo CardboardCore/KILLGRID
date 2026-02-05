@@ -118,7 +118,7 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
                     placeable.RequestTakeOwnership(owningStateMachine.Owner);
 
-                    placeable.ShowAsGreenHologram(true);
+                    placeable.ShowAsPlaceable(true);
                     placeable.transform.position = hexTileActor.transform.position;
 
                     UpdatePlaceableActor(placeable);
@@ -134,12 +134,12 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
                 if (memoryBankComponent.PlaceableConfig.Type == PlaceableType.CoreHQBuilding || hexTileActor.IsEligibleForPlacement)
                 {
-                    placeable.ShowAsGreenHologram(true);
+                    placeable.ShowAsPlaceable(true);
                     canPlace = true;
                 }
                 else
                 {
-                    placeable.ShowAsRedHologram(true);
+                    placeable.ShowAsUnplaceable(true);
                     canPlace = false;
                 }
             }
@@ -219,7 +219,10 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
                         memoryBankComponent.RequestConsume();
 
-                        playerOwnedTilesComponent.AddOwnedTile(hexTileActor);
+                        if (memoryBankComponent.PlaceableConfig.WillClaimTile)
+                        {
+                            playerOwnedTilesComponent.AddOwnedTile(hexTileActor);
+                        }
 
                         owningStateMachine.Owner.GetComponent<PlayerMemoryBankComponent>().Cmd_RemoveMemoryBank(memoryBankComponent.netId);
 

@@ -114,7 +114,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
             }
 
             int myX = Owner.OccupyingTile.GetGridPosition().x;
-            (int x, int y)[] offsets = (myX % 2 == 0) ? HexGridUtils.EvenQOffsets : HexGridUtils.OddQOffsets;
+            (int x, int y)[] offsets = myX % 2 == 0 ? HexGridUtils.EvenQOffsets : HexGridUtils.OddQOffsets;
 
             for (int i = 1; i <= offsets.Length; i++)
             {
@@ -131,9 +131,15 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
                     continue;
                 }
 
+                // Check status of tile
+                if (hexTile.OwnerPlayerIndex > -1 || hexTile.IsEnergized)
+                {
+                    continue;
+                }
+
                 Log.Write($"Energizing tile at offset x:{nextTile.x} y:{nextTile.y} for player index {Owner.OccupyingTile.OwnerPlayerIndex}.");
 
-                hexTile.SetOwner(Owner.OccupyingTile.OwnerPlayerIndex);
+                hexTile.SetIsEnergized(true);
 
                 energizedTiles.Add(TileCoords.FromTuple(nextTile));
                 lastDirectionIndex = nextIndex;
@@ -192,9 +198,8 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
                 Log.Write($"De-energizing tile at offset x:{tileCoordsToDeEnergize.x} y:{tileCoordsToDeEnergize.y} for player index {Owner.OccupyingTile.OwnerPlayerIndex}.");
 
                 // De-energize the tile
-                hexTile.SetOwner(-1);
+                hexTile.SetIsEnergized(false);
 
-                // Error here!!
                 energizedTiles.RemoveAt(deEnergizeIndex);
 
                 deEnergizeIndex -= 1;

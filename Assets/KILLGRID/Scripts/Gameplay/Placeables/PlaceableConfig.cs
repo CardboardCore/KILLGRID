@@ -11,10 +11,12 @@ namespace KILLGRID.Gameplay.Placeables
         [SerializeField] private PlaceableType type;
         [SerializeField] private int cost;
         [SerializeField] private PlaceableActor placeableActorPrefab;
+        [SerializeField] private bool willClaimTile;
 
         public string Name => name;
         public PlaceableType Type => type;
         public int Cost => cost;
         public PlaceableActor PlaceableActorPrefab => placeableActorPrefab;
+        public bool WillClaimTile => willClaimTile;
     }
 }

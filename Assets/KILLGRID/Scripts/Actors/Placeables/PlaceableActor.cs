@@ -101,10 +101,10 @@ namespace KILLGRID.Actors.Placeables
         private void Rpc_HideVisuals() { HideVisuals(false); }
 
         [ClientRpc]
-        private void Rpc_ShowAsGreenHologram() { ShowAsGreenHologram(false); }
+        private void Rpc_ShowAsGreenHologram() { ShowAsPlaceable(false); }
 
         [ClientRpc]
-        private void Rpc_ShowAsRedHologram() { ShowAsRedHologram(false); }
+        private void Rpc_ShowAsRedHologram() { ShowAsUnplaceable(false); }
 
         [ClientRpc]
         private void Rpc_ShowAsNormal() { ShowAsNormal(false); }
@@ -135,7 +135,7 @@ namespace KILLGRID.Actors.Placeables
         }
 
         [Client]
-        public void ShowAsGreenHologram(bool callCommand)
+        public void ShowAsPlaceable(bool callCommand)
         {
             config.GreenHoloView.SetActive(true);
             config.RedHoloView.SetActive(false);
@@ -148,7 +148,7 @@ namespace KILLGRID.Actors.Placeables
         }
 
         [Client]
-        public void ShowAsRedHologram(bool callCommand)
+        public void ShowAsUnplaceable(bool callCommand)
         {
             config.GreenHoloView.SetActive(false);
             config.RedHoloView.SetActive(true);

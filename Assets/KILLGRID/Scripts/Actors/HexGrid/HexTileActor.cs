@@ -18,6 +18,7 @@ namespace KILLGRID.Actors.HexGrid
         [SerializeField] private Material neutralMaterial;
         [SerializeField] private Material playerOneMaterial;
         [SerializeField] private Material playerTwoMaterial;
+        [SerializeField] private Material energizedMaterial;
 
         [Header("Floating Animation Settings")]
         [SerializeField] private float floatingHeight = 0.2f;
@@ -38,6 +39,8 @@ namespace KILLGRID.Actors.HexGrid
                 _ => throw new ArgumentOutOfRangeException(nameof(playerIndex), playerIndex, null)
             };
         }
+
+        public Material EnergyMaterial => energizedMaterial;
     }
 
     public class HexTileActor : Actor
@@ -45,6 +48,7 @@ namespace KILLGRID.Actors.HexGrid
         [Header("References")]
         [SerializeField] private InteractableComponent interactableComponent;
         [SerializeField] private HighlightEffect buildZomeHighlightEffect;
+        [SerializeField] private ParticleSystem energizedParticleSystem;
 
         [Header("Settings")]
         [SerializeField] private HexTileConfig config;
@@ -59,10 +63,12 @@ namespace KILLGRID.Actors.HexGrid
 
         [SyncVar] private uint placedActorNetId;
         [SyncVar] private bool isInBuildZone;
+        [SyncVar(hook = nameof(OnEnergizedChanged))] private bool isEnergized;
 
         public int OwnerPlayerIndex => ownerPlayerIndex;
         public bool IsOccupied => isOccupied;
         public bool IsEligibleForPlacement => !isOccupied && isInBuildZone;
+        public bool IsEnergized => isEnergized;
 
         private void OnDrawGizmosSelected()
         {
@@ -75,6 +81,8 @@ namespace KILLGRID.Actors.HexGrid
             initialFloatY = transform.position.y;
 
             UpdateMaterial();
+
+            energizedParticleSystem.Stop();
         }
 
         [Command(requiresAuthority = false)]
@@ -94,18 +102,42 @@ namespace KILLGRID.Actors.HexGrid
         }
 
         [Client]
+        private void OnEnergizedChanged(bool oldIsEnergized, bool newIsEnergized)
+        {
+            UpdatePosition();
+            UpdateEnergizedHighlight();
+            UpdateMaterial();
+        }
+
+        [Client]
         private void UpdatePosition()
         {
-            float targetFloatY = ownerPlayerIndex == -1 ? initialFloatY : initialFloatY + config.FloatingHeight;
+            bool shouldFloat = ownerPlayerIndex != -1 || isEnergized;
+            float targetFloatY = shouldFloat ? initialFloatY + config.FloatingHeight : initialFloatY;
+
             transform.DOMoveY(targetFloatY, config.FloatingDuration).SetEase(config.FloatingEase);
         }
 
         [Client]
         private void UpdateMaterial()
         {
-            Material newMaterial = config.GetMaterialForPlayerIndex(ownerPlayerIndex);
+            Material newMaterial = !isEnergized ? config.GetMaterialForPlayerIndex(ownerPlayerIndex) : config.EnergyMaterial;
+
             MeshRenderer meshRenderer = GetComponentInChildren<MeshRenderer>();
             meshRenderer.material = newMaterial;
+        }
+
+        [Client]
+        private void UpdateEnergizedHighlight()
+        {
+            if (isEnergized)
+            {
+                energizedParticleSystem.Play();
+            }
+            else
+            {
+                energizedParticleSystem.Stop();
+            }
         }
 
         [ClientRpc]
@@ -125,6 +157,12 @@ namespace KILLGRID.Actors.HexGrid
         public void SetOwner(int playerIndex)
         {
             ownerPlayerIndex = playerIndex;
+        }
+
+        [Server]
+        public void SetIsEnergized(bool energized)
+        {
+            isEnergized = energized;
         }
 
         [Server]
