@@ -29,11 +29,6 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
         private void PlayerEndTurnPressed()
         {
             ToState<UnitMovementState>();
-            // TODO: Go to unit movement state before ending turn, but for now just end turn immediately
-            // TODO: Make this more central as we're also doing this in CheckEnergyState
-            // owningStateMachine.Owner.GetComponent<PlayerCameraComponent>().ResetCameraStep();
-            // owningStateMachine.Owner.MyMonitor.SetIsPlayerTurn(false);
-            // owningStateMachine.EndActionPhase();
         }
 
         protected override void OnHover(InteractableComponent interactableComponent)

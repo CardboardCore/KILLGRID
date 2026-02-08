@@ -24,6 +24,8 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
 
         [SerializeField] private MovementConfig config;
 
+        public event Action<MovementComponent> MovementFinishedEvent;
+
         [Server]
         protected override void OnServerPlacedInternal()
         {
@@ -110,7 +112,14 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
 
             sequence.OnComplete(() => {
                 pathTileActors[^1].Cmd_PlaceActor(Owner);
+                Rpc_MovementFinished();
             });
+        }
+
+        [ClientRpc]
+        private void Rpc_MovementFinished()
+        {
+            MovementFinishedEvent?.Invoke(this);
         }
 
         [Client]

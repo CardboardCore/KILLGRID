@@ -1,6 +1,4 @@
-﻿using Attic.Cameras;
-using Attic.Cameras.Transitions;
-using Attic.Cameras.VirtualCameras;
+﻿using System.Collections.Generic;
 using Attic.DI;
 using Attic.Utilities;
 using Attic.Utils.Invoking;
@@ -16,15 +14,17 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
         private PlayerOwnedPlaceablesComponent playerOwnedPlaceablesComponent;
 
+        private readonly List<MovementComponent> awaitingMovementFinishedList = new List<MovementComponent>();
+
         protected override void OnEnter()
         {
             base.OnEnter();
 
-            owningStateMachine.Owner.GetComponent<PlayerCameraComponent>().SetMaxStep();
-
             playerOwnedPlaceablesComponent = owningStateMachine.Owner.GetComponent<PlayerOwnedPlaceablesComponent>();
 
             PlaceableActor[] ownedUnits = playerOwnedPlaceablesComponent.GetOwnedUnits();
+
+            awaitingMovementFinishedList.Clear();
 
             for (int i = 0; i < ownedUnits.Length; i++)
             {
@@ -38,10 +38,19 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
                     continue;
                 }
 
+                movementComponent.MovementFinishedEvent += OnMovementFinished;
+                awaitingMovementFinishedList.Add(movementComponent);
+
                 invokeWrapper.Invoke(movementComponent.RequestTryMove, 1 * i);
             }
 
-            invokeWrapper.Invoke(Continue, ownedUnits.Length * 2);
+            if (awaitingMovementFinishedList.Count == 0)
+            {
+                Continue();
+                return;
+            }
+
+            owningStateMachine.Owner.GetComponent<PlayerCameraComponent>().SetMaxStep();
         }
 
         protected override void OnExit()
@@ -59,8 +68,20 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
         }
 
+        private void OnMovementFinished(MovementComponent movementComponent)
+        {
+            movementComponent.MovementFinishedEvent -= OnMovementFinished;
+            awaitingMovementFinishedList.Remove(movementComponent);
+
+            if (awaitingMovementFinishedList.Count == 0)
+            {
+                Continue();
+            }
+        }
+
         private void Continue()
         {
+            // TODO: Go to Attack State, end turn after attacking is done and opponent health is updated and winner is checked
             owningStateMachine.Owner.GetComponent<PlayerCameraComponent>().ResetCameraStep();
             owningStateMachine.Owner.MyMonitor.SetIsPlayerTurn(false);
             owningStateMachine.EndActionPhase();

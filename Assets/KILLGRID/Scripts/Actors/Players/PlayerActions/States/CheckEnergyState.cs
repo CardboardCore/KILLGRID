@@ -61,9 +61,6 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
         private void EndActionPhase()
         {
             ToState<UnitMovementState>();
-            // owningStateMachine.Owner.GetComponent<PlayerCameraComponent>().ResetCameraStep();
-            // owningStateMachine.Owner.MyMonitor.SetIsPlayerTurn(false);
-            // owningStateMachine.EndActionPhase();
         }
 
         protected override void OnHover(InteractableComponent interactableComponent)
