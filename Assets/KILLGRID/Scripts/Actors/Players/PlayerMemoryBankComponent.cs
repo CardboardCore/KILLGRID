@@ -32,6 +32,7 @@ namespace KILLGRID.Actors.Players
             }
         }
 
+        // TODO: Add a "Request" client side method and make this private...
         [Command(requiresAuthority = false)]
         public void Cmd_RemoveMemoryBank(uint memoryBankNetId)
         {

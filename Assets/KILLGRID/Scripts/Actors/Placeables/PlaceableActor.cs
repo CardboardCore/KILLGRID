@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Attic.Mirror.Actors;
 using Attic.Utilities;
 using KILLGRID.Actors.HexGrid;
@@ -30,15 +31,28 @@ namespace KILLGRID.Actors.Placeables
         [SyncVar(hook = nameof(OnOwningPlayerIndexChanged))] private int owningPlayerIndex = -1;
         [SyncVar(hook = nameof(OnOccupyingTileChanged))] private uint occupyingTileNetId;
 
+        [SyncVar] private PlaceableType placeableType;
+
         private PlaceableActorComponent[] placeableActorComponents;
 
         private HexTileActor occupyingTile;
 
+        public int OwningPlayerIndex => owningPlayerIndex;
+
         /// <summary>
         /// The tile this placeable is occupying.
         /// </summary>
-        public HexTileActor OccupyingTile => NetworkClient.spawned.TryGetValue(occupyingTileNetId, out NetworkIdentity identity)
-            ? identity.GetComponent<HexTileActor>() : null;
+        public HexTileActor OccupyingTile
+        {
+            get
+            {
+                Dictionary<uint, NetworkIdentity> spawnedDict = isServer ? NetworkServer.spawned : NetworkClient.spawned;
+
+                return spawnedDict.TryGetValue(occupyingTileNetId, out NetworkIdentity identity) ? identity.GetComponent<HexTileActor>() : null;
+            }
+        }
+
+        public PlaceableType PlaceableType => placeableType;
 
         protected override void OnInjected()
         {
@@ -188,9 +202,10 @@ namespace KILLGRID.Actors.Placeables
         }
 
         [Server]
-        public void SetOwningPlayerIndex(int playerIndex)
+        public void Initialize(int playerIndex, PlaceableType placeableType)
         {
             owningPlayerIndex = playerIndex;
+            this.placeableType = placeableType;
         }
 
         [Server]
@@ -201,6 +216,17 @@ namespace KILLGRID.Actors.Placeables
             foreach (PlaceableActorComponent placeableActorComponent in placeableActorComponents)
             {
                 placeableActorComponent.OnPlaced();
+            }
+        }
+
+        [Server]
+        public void ClearOccupyingTile()
+        {
+            occupyingTileNetId = 0;
+
+            foreach (PlaceableActorComponent placeableActorComponent in placeableActorComponents)
+            {
+                placeableActorComponent.OnRemoved();
             }
         }
 

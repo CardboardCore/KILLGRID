@@ -1,45 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using Attic.DI;
 using Attic.Utilities;
 using KILLGRID.Actors.HexGrid;
+using KILLGRID.Gameplay.HexGrid;
 using KILLGRID.Input;
 using Mirror;
 using UnityEngine.InputSystem;
 
 namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
 {
-    public static class HexGridUtils
-    {
-        // Even-q offset for flat-top hex grid
-        public static readonly (int x, int y)[] EvenQOffsets = new (int, int)[]
-        {
-            (0, 1),   // N
-            (1, 0),   // NE
-            (1, -1),  // SE
-            (0, -1),  // S
-            (-1, -1), // SW
-            (-1, 0)   // NW
-        };
-
-        // Odd-q offset for flat-top hex grid
-        public static readonly (int x, int y)[] OddQOffsets = new (int, int)[]
-        {
-            (0, 1),  // N
-            (1, 1),  // NE
-            (1, 0),  // SE
-            (0, -1), // S
-            (-1, 0), // SW
-            (-1, 1)  // NW
-        };
-    }
-
     // TODO: Put in own file
     [Serializable]
     public struct TileCoords : IEquatable<TileCoords>
     {
         public int x;
         public int y;
+
+        public (int x, int y) ToTuple()
+        {
+            return (x, y);
+        }
 
         public static TileCoords FromTuple((int x, int y) tuple)
         {
@@ -212,6 +192,12 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
         protected override void OnServerPlacedInternal()
         {
             // energizedTiles.Add(Owner.OccupyingTile.GetGridPosition());
+        }
+
+        [Server]
+        protected override void OnServerRemovedInternal()
+        {
+
         }
 
         [Server]

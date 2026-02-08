@@ -100,5 +100,12 @@ namespace KILLGRID.Actors.Players
             currentStepIndex = 0;
             SetCameraStep(currentStepIndex);
         }
+
+        [Client]
+        public void SetMaxStep()
+        {
+            currentStepIndex = cameraStepConfig.Steps.Length - 1;
+            SetCameraStep(currentStepIndex);
+        }
     }
 }

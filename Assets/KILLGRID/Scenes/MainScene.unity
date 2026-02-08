@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 394203}
   - component: {fileID: 394202}
   m_Layer: 0
-  m_Name: VirtualCamera-CheckBoard-1
+  m_Name: VirtualCamera-CheckBoard_1
   m_TagString: Untagged
   m_Icon: {fileID: 2800000, guid: 3869a973df0fda3438d207ac5e8fd666, type: 3}
   m_NavMeshLayer: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
     eulerX: 0
     eulerY: 0
     eulerZ: 0
-    id: CheckBoard-1
+    id: CheckBoard_1
     isOrthographic: 0
     fov: 60
     nearClipPlane: 0.3
@@ -442,7 +442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCameraManager: {fileID: 1077953782}
-  initialCameraId: Default-1
+  initialCameraId: Default_1
 --- !u!1 &577246746
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,7 +658,7 @@ GameObject:
   - component: {fileID: 645695195}
   - component: {fileID: 645695194}
   m_Layer: 0
-  m_Name: VirtualCamera-CheckButtons-2
+  m_Name: VirtualCamera-CheckButtons_2
   m_TagString: Untagged
   m_Icon: {fileID: 2800000, guid: 3869a973df0fda3438d207ac5e8fd666, type: 3}
   m_NavMeshLayer: 0
@@ -684,7 +684,7 @@ MonoBehaviour:
     eulerX: 0
     eulerY: 0
     eulerZ: 0
-    id: CheckButtons-2
+    id: CheckButtons_2
     isOrthographic: 0
     fov: 60
     nearClipPlane: 0.3
@@ -779,7 +779,7 @@ GameObject:
   - component: {fileID: 713396121}
   - component: {fileID: 713396120}
   m_Layer: 0
-  m_Name: VirtualCamera-Default-1
+  m_Name: VirtualCamera-Default_1
   m_TagString: Untagged
   m_Icon: {fileID: 2800000, guid: 3869a973df0fda3438d207ac5e8fd666, type: 3}
   m_NavMeshLayer: 0
@@ -805,7 +805,7 @@ MonoBehaviour:
     eulerX: 0
     eulerY: 0
     eulerZ: 0
-    id: Default-1
+    id: Default_1
     isOrthographic: 0
     fov: 60
     nearClipPlane: 0.3
@@ -1006,7 +1006,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   queuedForRemoval: 0
-  myVirtualCamera: {fileID: 1263039999}
+  myVirtualCamera: {fileID: 713396120}
 --- !u!1 &1077953781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1038,12 +1038,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCameras:
-  - {fileID: 394202}
-  - {fileID: 713396120}
-  - {fileID: 1546533277}
   - {fileID: 1129198139}
   - {fileID: 1263039999}
   - {fileID: 645695194}
+  - {fileID: 394202}
+  - {fileID: 1546533277}
+  - {fileID: 713396120}
 --- !u!114 &1077953783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1248,7 +1248,7 @@ GameObject:
   - component: {fileID: 1129198140}
   - component: {fileID: 1129198139}
   m_Layer: 0
-  m_Name: VirtualCamera-CheckBoard-2
+  m_Name: VirtualCamera-CheckBoard_2
   m_TagString: Untagged
   m_Icon: {fileID: 2800000, guid: 3869a973df0fda3438d207ac5e8fd666, type: 3}
   m_NavMeshLayer: 0
@@ -1274,7 +1274,7 @@ MonoBehaviour:
     eulerX: 0
     eulerY: 0
     eulerZ: 0
-    id: CheckBoard-2
+    id: CheckBoard_2
     isOrthographic: 0
     fov: 60
     nearClipPlane: 0.3
@@ -1444,7 +1444,7 @@ GameObject:
   - component: {fileID: 1263040000}
   - component: {fileID: 1263039999}
   m_Layer: 0
-  m_Name: VirtualCamera-Default-2
+  m_Name: VirtualCamera-Default_2
   m_TagString: Untagged
   m_Icon: {fileID: 2800000, guid: 3869a973df0fda3438d207ac5e8fd666, type: 3}
   m_NavMeshLayer: 0
@@ -1470,7 +1470,7 @@ MonoBehaviour:
     eulerX: 0
     eulerY: 0
     eulerZ: 0
-    id: Default-2
+    id: Default_2
     isOrthographic: 0
     fov: 60
     nearClipPlane: 0.3
@@ -1637,7 +1637,7 @@ GameObject:
   - component: {fileID: 1546533278}
   - component: {fileID: 1546533277}
   m_Layer: 0
-  m_Name: VirtualCamera-CheckButtons-1
+  m_Name: VirtualCamera-CheckButtons_1
   m_TagString: Untagged
   m_Icon: {fileID: 2800000, guid: 3869a973df0fda3438d207ac5e8fd666, type: 3}
   m_NavMeshLayer: 0
@@ -1663,7 +1663,7 @@ MonoBehaviour:
     eulerX: 0
     eulerY: 0
     eulerZ: 0
-    id: CheckButtons-1
+    id: CheckButtons_1
     isOrthographic: 0
     fov: 60
     nearClipPlane: 0.3
@@ -1892,7 +1892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Run.Cameras.DefaultModule
   queuedForRemoval: 0
-  myVirtualCamera: {fileID: 645695194}
+  myVirtualCamera: {fileID: 1546533277}
 --- !u!114 &1945396960 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4957020057936180424, guid: 7a711a9141c6c504984525c5347dad49, type: 3}

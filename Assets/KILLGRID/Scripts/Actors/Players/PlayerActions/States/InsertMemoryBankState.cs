@@ -221,10 +221,11 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
                         if (memoryBankComponent.PlaceableConfig.WillClaimTile)
                         {
-                            playerOwnedTilesComponent.AddOwnedTile(hexTileActor);
+                            playerOwnedTilesComponent.RequestAddOwnedTile(hexTileActor);
                         }
 
                         owningStateMachine.Owner.GetComponent<PlayerMemoryBankComponent>().Cmd_RemoveMemoryBank(memoryBankComponent.netId);
+                        owningStateMachine.Owner.GetComponent<PlayerOwnedPlaceablesComponent>().RequestAddOwnedPlaceable(placeableActor);
 
                         hexTileActor.RequestPlaceActor(placeableActor);
 

@@ -8,7 +8,7 @@ namespace KILLGRID.Actors.Players
 {
     public class PlayerOwnedTilesComponent : ActorComponent
     {
-        private SyncList<uint> ownedTileNetIds = new SyncList<uint>();
+        private readonly SyncList<uint> ownedTileNetIds = new SyncList<uint>();
 
         public IReadOnlyList<uint> OwnedTileNetIds => ownedTileNetIds;
 
@@ -61,7 +61,7 @@ namespace KILLGRID.Actors.Players
         }
 
         [Client]
-        public void AddOwnedTile(HexTileActor hexTileActor)
+        public void RequestAddOwnedTile(HexTileActor hexTileActor)
         {
             Cmd_AddOwnedTile(hexTileActor.netId);
         }

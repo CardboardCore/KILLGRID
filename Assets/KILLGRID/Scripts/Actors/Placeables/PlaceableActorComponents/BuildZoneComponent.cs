@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Attic.DI;
 using KILLGRID.Actors.HexGrid;
+using KILLGRID.Gameplay.HexGrid;
 using Mirror;
 using UnityEngine;
 
@@ -101,6 +102,12 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
                     }
                 }
             }
+        }
+
+        [Server]
+        protected override void OnServerRemovedInternal()
+        {
+
         }
 
         [Server]

@@ -20,8 +20,10 @@ namespace KILLGRID.Actors.Players.PlayerActions
             SetInitialState<CheckEnergyState>();
 
             AddFreeFlowTransition<CheckEnergyState, AwaitingPlayerSelectionState>();
+            AddFreeFlowTransition<CheckEnergyState, UnitMovementState>();
 
             AddFreeFlowTransition<AwaitingPlayerSelectionState, InsertMemoryBankState>();
+            AddFreeFlowTransition<AwaitingPlayerSelectionState, UnitMovementState>();
 
             AddFreeFlowTransition<InsertMemoryBankState, CheckEnergyState>();
             AddFreeFlowTransition<InsertMemoryBankState, AwaitingPlayerSelectionState>();

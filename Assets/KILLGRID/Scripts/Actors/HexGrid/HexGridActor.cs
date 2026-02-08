@@ -98,5 +98,20 @@ namespace KILLGRID.Actors.HexGrid
 
             return hexTiles[coords.x, coords.y];
         }
+
+        [Server]
+        public HexTileActor[] GetOppositeEdgeTiles(int playerIndex)
+        {
+            int edgeIndex = playerIndex == 0 ? gridData.GridHeight - 1 : 0;
+
+            HexTileActor[] edgeTiles = new HexTileActor[gridData.GridWidth];
+
+            for (int x = 0; x < gridData.GridWidth; x++)
+            {
+                edgeTiles[x] = hexTiles[x, edgeIndex];
+            }
+
+            return edgeTiles;
+        }
     }
 }

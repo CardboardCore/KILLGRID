@@ -18,17 +18,17 @@ namespace KILLGRID.Gameplay.Placeables
 
     public static class PlaceableTypeExtensions
     {
-        private static readonly PlaceableType[] NonCoreBuildingTypes = new[]
+        public static readonly PlaceableType[] NonCoreBuildingTypes = new[]
         {
             PlaceableType.GeneratorBuilding, PlaceableType.UplinkBuilding, PlaceableType.SubstationBuilding
         };
 
-        private static readonly PlaceableType[] UnitTypes = new[]
+        public static readonly PlaceableType[] UnitTypes = new[]
         {
             PlaceableType.RunnerUnit, PlaceableType.EnforcerUnit, PlaceableType.PhantomUnit
         };
 
-        private static readonly PlaceableType[] BuildingTypes = new[]
+        public static readonly PlaceableType[] BuildingTypes = new[]
         {
             PlaceableType.CoreHQBuilding, PlaceableType.GeneratorBuilding, PlaceableType.UplinkBuilding, PlaceableType.SubstationBuilding
         };

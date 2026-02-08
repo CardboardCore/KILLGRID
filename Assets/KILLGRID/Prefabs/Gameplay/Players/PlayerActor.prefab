@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 8947196615161704322}
   - component: {fileID: 7052936541930011927}
   - component: {fileID: 4386865140307655712}
+  - component: {fileID: 3837939134061419820}
   - component: {fileID: 6146356278595585922}
   - component: {fileID: 1665000684954907936}
   - component: {fileID: 2035855629717974861}
@@ -300,6 +301,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 172e6a37bde440b8b2314ecbdc403074, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Actors.Players.PlayerOwnedTilesComponent
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &3837939134061419820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786128614114064540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d23fd98f5dd4e2f81c16f3f34c25f1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KILLGRID.Actors.Players.PlayerOwnedPlaceablesComponent
   syncDirection: 0
   syncMode: 0
   syncInterval: 0

@@ -7,9 +7,10 @@ namespace KILLGRID.Actors.Placeables
     [RequireComponent(typeof(PlaceableActor))]
     public abstract class PlaceableActorComponent : ActorComponent
     {
-        protected PlaceableActor Owner { get; private set; }
+        protected new PlaceableActor Owner { get; private set; }
 
         protected abstract void OnServerPlacedInternal();
+        protected abstract void OnServerRemovedInternal();
         protected abstract void OnServerTurnStartInternal();
         protected abstract void OnServerTurnEndInternal();
 
@@ -22,6 +23,12 @@ namespace KILLGRID.Actors.Placeables
         public void OnPlaced()
         {
             OnServerPlacedInternal();
+        }
+
+        [Server]
+        public void OnRemoved()
+        {
+            OnServerRemovedInternal();
         }
 
         [Server]

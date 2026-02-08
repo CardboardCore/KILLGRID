@@ -86,12 +86,25 @@ namespace KILLGRID.Actors.HexGrid
         }
 
         [Command(requiresAuthority = false)]
-        private void Cmd_PlaceActor(PlaceableActor placeableActor)
+        public void Cmd_PlaceActor(PlaceableActor placeableActor)
         {
             placedActorNetId = placeableActor.netId;
             placeableActor.SetOccupyingTile(this);
 
             isOccupied = true;
+        }
+
+        [Command(requiresAuthority = false)]
+        public void Cmd_RemoveActor()
+        {
+            if (NetworkServer.spawned.TryGetValue(placedActorNetId, out NetworkIdentity networkIdentity))
+            {
+                PlaceableActor placeableActor = networkIdentity.GetComponent<PlaceableActor>();
+                placeableActor.ClearOccupyingTile();
+            }
+
+            placedActorNetId = 0;
+            isOccupied = false;
         }
 
         [Client]
