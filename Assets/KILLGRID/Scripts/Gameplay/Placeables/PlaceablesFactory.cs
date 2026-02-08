@@ -44,6 +44,7 @@ namespace KILLGRID.Gameplay.Placeables
 
             PlaceableActor placeableInstance = Instantiate(placeablePrefab, spawnPosition, spawnRotation);
             NetworkServer.Spawn(placeableInstance.gameObject);
+            placeableInstance.SetOwningPlayerIndex(playerActor.PlayerIndex);
 
             Rpc_SpawnedPlaceable(playerActor.netIdentity.connectionToClient, placeableInstance);
         }

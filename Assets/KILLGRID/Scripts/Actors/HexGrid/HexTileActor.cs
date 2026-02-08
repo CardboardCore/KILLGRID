@@ -157,6 +157,11 @@ namespace KILLGRID.Actors.HexGrid
         public void SetOwner(int playerIndex)
         {
             ownerPlayerIndex = playerIndex;
+
+            if (isEnergized)
+            {
+                isEnergized = false;
+            }
         }
 
         [Server]

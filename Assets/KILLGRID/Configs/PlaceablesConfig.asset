@@ -37,14 +37,14 @@ MonoBehaviour:
     type: 10
     cost: 2
     placeableActorPrefab: {fileID: 7633364681267825539, guid: 523cbff1f7e583840ae4814e61a10329, type: 3}
-    willClaimTile: 0
+    willClaimTile: 1
   - name: Enforcer Unit
     type: 11
     cost: 3
     placeableActorPrefab: {fileID: 62864006006447416, guid: 2693991875105864681ce4de2821face, type: 3}
-    willClaimTile: 0
+    willClaimTile: 1
   - name: Phantom Unit
     type: 12
     cost: 4
     placeableActorPrefab: {fileID: 9023166386926686626, guid: 9ac38b3d28611e54a99578035527e44b, type: 3}
-    willClaimTile: 0
+    willClaimTile: 1

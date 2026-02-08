@@ -27,7 +27,7 @@ namespace KILLGRID.Actors.Placeables
         private bool isSpawned;
         private event Action spawnEvent;
 
-        // Networked ID of the tile this placeable is occupying
+        [SyncVar(hook = nameof(OnOwningPlayerIndexChanged))] private int owningPlayerIndex = -1;
         [SyncVar(hook = nameof(OnOccupyingTileChanged))] private uint occupyingTileNetId;
 
         private PlaceableActorComponent[] placeableActorComponents;
@@ -70,6 +70,20 @@ namespace KILLGRID.Actors.Placeables
             }
 
             transform.position = occupyingTile.transform.position;
+        }
+
+        [Client]
+        private void OnOwningPlayerIndexChanged(int oldIndex, int newIndex)
+        {
+            // Based on index, rotate either 0 or 180 degrees on Y axis
+            float yRotation = newIndex switch
+            {
+                0 => 0f,
+                1 => 180f,
+                _ => 0f
+            };
+
+            transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
         }
 
         [Client]
@@ -171,6 +185,12 @@ namespace KILLGRID.Actors.Placeables
             {
                 Cmd_ShowAsNormal();
             }
+        }
+
+        [Server]
+        public void SetOwningPlayerIndex(int playerIndex)
+        {
+            owningPlayerIndex = playerIndex;
         }
 
         [Server]
