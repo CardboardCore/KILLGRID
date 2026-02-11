@@ -54,14 +54,14 @@ namespace KILLGRID.Actors.Players
             ownedPlaceablesNetIds.Remove(placeableNetId);
         }
 
-        [Server]
+        [Client]
         public PlaceableActor[] GetOwnedPlaceables(params PlaceableType[] types)
         {
             List<PlaceableActor> ownedPlaceables = new List<PlaceableActor>();
 
             foreach (uint ownedPlaceablesNetId in ownedPlaceablesNetIds)
             {
-                if (NetworkServer.spawned.TryGetValue(ownedPlaceablesNetId, out NetworkIdentity identity))
+                if (NetworkClient.spawned.TryGetValue(ownedPlaceablesNetId, out NetworkIdentity identity))
                 {
                     PlaceableActor placeableActor = identity.GetComponent<PlaceableActor>();
 
@@ -81,7 +81,7 @@ namespace KILLGRID.Actors.Players
             return ownedPlaceables.ToArray();
         }
 
-        [Server]
+        [Client]
         public PlaceableActor[] GetOwnedUnits()
         {
             return GetOwnedPlaceables(PlaceableTypeExtensions.UnitTypes);

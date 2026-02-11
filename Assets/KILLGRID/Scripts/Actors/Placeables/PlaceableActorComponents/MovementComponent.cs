@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Attic.DI;
 using Attic.Utilities;
+using Attic.Utils.Invoking;
 using DG.Tweening;
 using KILLGRID.Actors.HexGrid;
 using KILLGRID.Gameplay.HexGrid;
@@ -21,6 +22,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
     public class MovementComponent : PlaceableActorComponent
     {
         [Inject] private HexGridActor hexGridActor;
+        [Inject] private InvokeWrapper invokeWrapper;
 
         [SerializeField] private MovementConfig config;
 
@@ -66,7 +68,11 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
                 HexTileActor oppositeEdgeTile = oppositeEdgeTiles[i];
                 TileCoords oppositeTileCoords = oppositeEdgeTile.GetTileCoords();
 
-                List<(int q, int r)> path = HexGridPathfinder.FindPath(tileCoords.ToTuple(), oppositeTileCoords.ToTuple(), null);
+                bool[,] blockedTiles = hexGridActor.GetBlockedTiles();
+
+                List<(int q, int r)> path = HexGridPathfinder.FindPath((hexGridActor.GridData.GridWidth, hexGridActor.GridData.GridHeight),
+                    tileCoords.ToTuple(), oppositeTileCoords.ToTuple(),
+                    (q, r) => blockedTiles.GetValue(q, r) is true);
 
                 if (path != null && path.Count < shortestPathLength)
                 {
@@ -89,7 +95,6 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
                 if (!hexTileActor)
                 {
                     Log.Error($"Cannot find hex tile actor at path coords x:{path.x} y:{path.y}.");
-
                     return;
                 }
 
@@ -103,23 +108,33 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
 
             occupyingTile.Cmd_RemoveActor();
 
-            Sequence sequence = DOTween.Sequence();
-
-            foreach (HexTileActor pathTileActor in pathTileActors)
+            // Instead of animating on the server, send the path to all clients to animate locally
+            List<Vector3> pathPositions = new List<Vector3>();
+            foreach (HexTileActor tileActor in pathTileActors)
             {
-                sequence.Append(transform.DOMove(pathTileActor.transform.position, 0.75f));
+                pathPositions.Add(tileActor.transform.position);
             }
 
-            sequence.OnComplete(() => {
-                pathTileActors[^1].Cmd_PlaceActor(Owner);
-                Rpc_MovementFinished();
-            });
+            Rpc_AnimateMovement(pathPositions.ToArray());
+
+            // Place the actor on the final tile on the server (logic only)
+            invokeWrapper.Invoke(() => pathTileActors[^1].Cmd_PlaceActor(Owner), 0.75f * pathTileActors.Count);
         }
 
         [ClientRpc]
-        private void Rpc_MovementFinished()
+        private void Rpc_AnimateMovement(Vector3[] pathPositions)
         {
-            MovementFinishedEvent?.Invoke(this);
+            // Animate the movement locally on each client
+            Sequence sequence = DOTween.Sequence();
+
+            foreach (Vector3 pos in pathPositions)
+            {
+                sequence.Append(transform.DOMove(pos, 0.75f));
+            }
+
+            sequence.OnComplete(() => {
+                MovementFinishedEvent?.Invoke(this);
+            });
         }
 
         [Client]

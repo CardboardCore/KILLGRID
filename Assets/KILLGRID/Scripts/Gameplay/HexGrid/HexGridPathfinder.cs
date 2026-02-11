@@ -91,7 +91,8 @@ namespace KILLGRID.Gameplay.HexGrid
             return CubeDistance(ac, bc);
         }
 
-        public static List<(int q, int r)> FindPath((int q, int r) start,
+        public static List<(int q, int r)> FindPath((int q, int r) dimensions,
+                                                    (int q, int r) start,
                                              (int q, int r) goal,
                                              Func<int, int, bool> isBlocked)
         {
@@ -111,6 +112,11 @@ namespace KILLGRID.Gameplay.HexGrid
 
                 foreach ((int nq, int nr) in GetNeighbors(current.q, current.r))
                 {
+                    if (nq < 0 || nq >= dimensions.q || nr < 0 || nr >= dimensions.r)
+                    {
+                        continue; // out of bounds
+                    }
+
                     if (isBlocked != null && isBlocked(nq, nr))
                     {
                         continue;

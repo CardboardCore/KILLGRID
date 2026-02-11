@@ -31,6 +31,8 @@ namespace KILLGRID.Actors.HexGrid
         private HexTileActor[,] hexTiles;
         private HexTileActor[] flatHexTiles;
 
+        public HexGridData GridData => gridData;
+
         protected override void OnInjected()
         {
 
@@ -112,6 +114,23 @@ namespace KILLGRID.Actors.HexGrid
             }
 
             return edgeTiles;
+        }
+
+        [Server]
+        public bool[,] GetBlockedTiles()
+        {
+            bool[,] blocked = new bool[gridData.GridWidth, gridData.GridHeight];
+
+            for (int x = 0; x < gridData.GridWidth; x++)
+            {
+                for (int y = 0; y < gridData.GridHeight; y++)
+                {
+                    HexTileActor hexTileActor = hexTiles[x, y];
+                    blocked[x, y] = hexTileActor.IsOccupied;
+                }
+            }
+
+            return blocked;
         }
     }
 }
