@@ -165,6 +165,11 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
                 case InteractableType.Tile:
 
+                    if (!canPlace)
+                    {
+                        return;
+                    }
+
                     // Place placeable on tile and spend memory bank / energy
                     if (placeableActor && memoryBankComponent)
                     {

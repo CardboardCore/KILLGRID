@@ -27,6 +27,8 @@ namespace KILLGRID.Actors.Players.PlayerActions
 
             AddFreeFlowTransition<InsertMemoryBankState, CheckEnergyState>();
             AddFreeFlowTransition<InsertMemoryBankState, AwaitingPlayerSelectionState>();
+
+            AddFreeFlowTransition<UnitMovementState, UnitAttackState>();
         }
 
         public void EndActionPhase()

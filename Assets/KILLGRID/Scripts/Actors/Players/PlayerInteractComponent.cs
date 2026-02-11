@@ -161,5 +161,24 @@ namespace KILLGRID.Actors.Players
                 HoverEvent?.Invoke(null);
             }
         }
+
+        [Client]
+        public void UnselectCurrentSelectedInteractable()
+        {
+            if (currentSelectedInteractableComponent)
+            {
+                currentSelectedInteractableComponent.UnSelect(true);
+                currentSelectedInteractableComponent = null;
+            }
+        }
+
+        public void UnHighlightCurrentHighlightedInteractable()
+        {
+            if (currentHighlightedInteractableComponent)
+            {
+                currentHighlightedInteractableComponent.ShowHighlight(true, false);
+                currentHighlightedInteractableComponent = null;
+            }
+        }
     }
 }

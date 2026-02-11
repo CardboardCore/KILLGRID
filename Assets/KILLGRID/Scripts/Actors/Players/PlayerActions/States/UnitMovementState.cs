@@ -56,6 +56,11 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
         protected override void OnExit()
         {
             base.OnExit();
+
+            foreach (MovementComponent movementComponent in awaitingMovementFinishedList)
+            {
+                movementComponent.MovementFinishedEvent -= OnMovementFinished;
+            }
         }
 
         protected override void OnHover(InteractableComponent interactableComponent)
@@ -81,10 +86,7 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
 
         private void Continue()
         {
-            // TODO: Go to Attack State, end turn after attacking is done and opponent health is updated and winner is checked
-            owningStateMachine.Owner.GetComponent<PlayerCameraComponent>().ResetCameraStep();
-            owningStateMachine.Owner.MyMonitor.SetIsPlayerTurn(false);
-            owningStateMachine.EndActionPhase();
+            invokeWrapper.Invoke(ToState<UnitAttackState>, 1f);
         }
     }
 }

@@ -162,7 +162,7 @@ MonoBehaviour:
     nearClipPlane: 0.3
     farClipPlane: 1000
     modules:
-    - {fileID: 1877395029}
+    - {fileID: 1262834643}
   myVirtualCameraManager: {fileID: 1077953782}
 --- !u!4 &394203
 Transform:
@@ -179,6 +179,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &202389113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7034e7deb348d94a9e6b78583626766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Run.Cameras.DefaultModule
+  queuedForRemoval: 0
+  myVirtualCamera: {fileID: 645695194}
 --- !u!1 &273865201
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,7 +704,7 @@ MonoBehaviour:
     nearClipPlane: 0.3
     farClipPlane: 1000
     modules:
-    - {fileID: 1877395029}
+    - {fileID: 202389113}
   myVirtualCameraManager: {fileID: 1077953782}
 --- !u!4 &645695195
 Transform:
@@ -707,6 +721,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 61.813, y: 180, z: 0}
+--- !u!114 &648379026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7034e7deb348d94a9e6b78583626766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Run.Cameras.DefaultModule
+  queuedForRemoval: 0
+  myVirtualCamera: {fileID: 1129198139}
 --- !u!1001 &668748567
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -811,7 +839,7 @@ MonoBehaviour:
     nearClipPlane: 0.3
     farClipPlane: 1000
     modules:
-    - {fileID: 979815981}
+    - {fileID: 1193239145}
   myVirtualCameraManager: {fileID: 1077953782}
 --- !u!4 &713396121
 Transform:
@@ -993,7 +1021,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &979815981
+--- !u!114 &881387063
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1004,9 +1032,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7034e7deb348d94a9e6b78583626766, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Run.Cameras.DefaultModule
   queuedForRemoval: 0
-  myVirtualCamera: {fileID: 713396120}
+  myVirtualCamera: {fileID: 1546533277}
 --- !u!1 &1077953781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1038,12 +1066,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCameras:
-  - {fileID: 1129198139}
-  - {fileID: 1263039999}
+  - {fileID: 713396120}
+  - {fileID: 1546533277}
   - {fileID: 645695194}
   - {fileID: 394202}
-  - {fileID: 1546533277}
-  - {fileID: 713396120}
+  - {fileID: 1263039999}
+  - {fileID: 1129198139}
 --- !u!114 &1077953783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1280,7 +1308,7 @@ MonoBehaviour:
     nearClipPlane: 0.3
     farClipPlane: 1000
     modules:
-    - {fileID: 1877395029}
+    - {fileID: 648379026}
   myVirtualCameraManager: {fileID: 1077953782}
 --- !u!4 &1129198140
 Transform:
@@ -1297,6 +1325,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 59.145, y: 180, z: 0}
+--- !u!114 &1193239145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7034e7deb348d94a9e6b78583626766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Run.Cameras.DefaultModule
+  queuedForRemoval: 0
+  myVirtualCamera: {fileID: 713396120}
 --- !u!1 &1208699836
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,7 +1442,7 @@ MonoBehaviour:
   playerActorTwoPrefab: {fileID: 2473316858261374833, guid: 17d71056f7be4bd4492d06669b0f9d9c, type: 3}
   oneMonitor: {fileID: 1945396960}
   twoMonitor: {fileID: 1116604103}
-  awaitFullGame: 1
+  awaitFullGame: 0
 --- !u!114 &1231911516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1433,6 +1475,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1262834643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7034e7deb348d94a9e6b78583626766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Run.Cameras.DefaultModule
+  queuedForRemoval: 0
+  myVirtualCamera: {fileID: 394202}
 --- !u!1 &1263039998
 GameObject:
   m_ObjectHideFlags: 0
@@ -1476,7 +1532,7 @@ MonoBehaviour:
     nearClipPlane: 0.3
     farClipPlane: 1000
     modules:
-    - {fileID: 979815981}
+    - {fileID: 1519730233}
   myVirtualCameraManager: {fileID: 1077953782}
 --- !u!4 &1263040000
 Transform:
@@ -1582,6 +1638,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invokeChildPrefab: {fileID: 929468506997892020, guid: 044ffd4e1f942b64e8f9121dde724168, type: 3}
+--- !u!114 &1519730233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7034e7deb348d94a9e6b78583626766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Run.Cameras.DefaultModule
+  queuedForRemoval: 0
+  myVirtualCamera: {fileID: 1263039999}
 --- !u!1 &1525364419
 GameObject:
   m_ObjectHideFlags: 0
@@ -1669,7 +1739,7 @@ MonoBehaviour:
     nearClipPlane: 0.3
     farClipPlane: 1000
     modules:
-    - {fileID: 1877395029}
+    - {fileID: 881387063}
   myVirtualCameraManager: {fileID: 1077953782}
 --- !u!4 &1546533278
 Transform:
@@ -1879,20 +1949,6 @@ Transform:
   - {fileID: 273865202}
   m_Father: {fileID: 577766767}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &1877395029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7034e7deb348d94a9e6b78583626766, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Run.Cameras.DefaultModule
-  queuedForRemoval: 0
-  myVirtualCamera: {fileID: 1546533277}
 --- !u!114 &1945396960 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4957020057936180424, guid: 7a711a9141c6c504984525c5347dad49, type: 3}

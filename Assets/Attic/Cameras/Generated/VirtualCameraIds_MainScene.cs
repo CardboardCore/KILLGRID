@@ -6,11 +6,11 @@ namespace Attic.Cameras
     // ReSharper disable once InconsistentNaming
     public static class VirtualCameraIds_MainScene
     {
-        public const string CheckBoard_2 = "CheckBoard_2";
-        public const string Default_2 = "Default_2";
+        public const string Default_1 = "Default_1";
+        public const string CheckButtons_1 = "CheckButtons_1";
         public const string CheckButtons_2 = "CheckButtons_2";
         public const string CheckBoard_1 = "CheckBoard_1";
-        public const string CheckButtons_1 = "CheckButtons_1";
-        public const string Default_1 = "Default_1";
+        public const string Default_2 = "Default_2";
+        public const string CheckBoard_2 = "CheckBoard_2";
     }
 }
