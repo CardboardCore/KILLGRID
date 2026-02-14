@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Attic.Mirror.Actors.Components;
 using Attic.DI;
 using Attic.Utilities;
+using Attic.Utils.Invoking;
 using Mirror;
 using UnityEngine;
 
@@ -13,9 +14,11 @@ namespace Attic.Mirror.Actors
         // ReSharper disable once UnassignedField.Global
         // ReSharper disable once InconsistentNaming
         [Inject] private ActorRegistry actorRegistry;
+        [Inject] private InvokeWrapper invokeWrapper;
 
         private ActorComponent[] actorComponents;
         private Coroutine removeOwnershipCoroutine;
+        private bool isMarkedForDestruction;
 
         protected override InjectTiming MyInjectTiming => InjectTiming.Client;
 
@@ -108,11 +111,13 @@ namespace Attic.Mirror.Actors
             }
         }
 
+        [Client]
         public void RequestTakeOwnership(Actor actor)
         {
             Cmd_SetOwnership(actor.netId);
         }
 
+        [Client]
         public void RequestRemoveOwnership()
         {
             Cmd_ClearOwnership();
@@ -124,6 +129,21 @@ namespace Attic.Mirror.Actors
             {
                 actorComponent.Cleanup();
             }
+        }
+
+        [Server]
+        public void MarkForDestruction()
+        {
+            if (isMarkedForDestruction)
+            {
+                return;
+            }
+
+            isMarkedForDestruction = true;
+
+            invokeWrapper.Invoke(() => {
+                NetworkServer.Destroy(gameObject);
+            }, 5f);
         }
     }
 }

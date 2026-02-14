@@ -1,15 +1,44 @@
 ﻿using System;
 using System.Linq;
 using Attic.DI;
+using DG.Tweening;
 using KILLGRID.Actors.HexGrid;
 using KILLGRID.Actors.Players;
+using KILLGRID.Gameplay.Turns;
 using Mirror;
+using UnityEngine;
 
 namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
 {
+    [Serializable]
+    public class AttackConfig
+    {
+        [SerializeField] private AttackComponent.AttackType attackType;
+        [SerializeField] private int attackDamage = 1;
+
+        public AttackComponent.AttackType AttackType => attackType;
+        public int AttackDamage => attackDamage;
+    }
+
     public class AttackComponent : PlaceableActorComponent
     {
+        public enum AttackType
+        {
+            /// <summary>
+            /// Shoot a projectile at the player.
+            /// </summary>
+            Shoot,
+
+            /// <summary>
+            /// Jump off the grid, into the player's face. Destroys the placeable in the process.
+            /// </summary>
+            JumpSuicide
+        }
+
         [Inject] private HexGridActor hexGridActor;
+        [Inject] private RoundManager roundManager;
+
+        [SerializeField] private AttackConfig attackConfig;
 
         public event Action<AttackComponent> AttackFinishedEvent;
 
@@ -41,7 +70,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
         }
 
         [Command(requiresAuthority = false)]
-        private void CmdRequestCanAttack(PlayerActor playerActor)
+        private void Cmd_RequestCanAttack(PlayerActor playerActor)
         {
             bool result = false;
 
@@ -66,6 +95,51 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
             canAttackCallback = null;
         }
 
+        [Command(requiresAuthority = false)]
+        private void Cmd_Attack(PlayerActor playerActor)
+        {
+            PlayerActor opponentPlayerActor = roundManager.GetOpponentPlayer();
+            PlayerHealthComponent playerHealthComponent = opponentPlayerActor.GetComponent<PlayerHealthComponent>();
+
+            switch (attackConfig.AttackType)
+            {
+                case AttackType.Shoot:
+                    // TODO: Spawn projectile, on impact do damage and then call Rpc_AttackFinished
+                    playerHealthComponent.TakeDamage(attackConfig.AttackDamage);
+                    Rpc_AttackFinished(playerActor.connectionToClient);
+                    break;
+
+                case AttackType.JumpSuicide:
+                    JumpToPlayer(opponentPlayerActor, () => {
+                        playerHealthComponent.TakeDamage(attackConfig.AttackDamage);
+                        Rpc_AttackFinished(playerActor.connectionToClient);
+
+                        Owner.MarkForDestruction();
+                    });
+                    break;
+            }
+        }
+
+        [Server]
+        private void JumpToPlayer(PlayerActor playerActor, Action callback)
+        {
+            Owner.OccupyingTile.Cmd_RemoveActor();
+
+            // Animate this transform to the player's position, then call the callback and destroy this placeable
+            Vector3 targetPosition = playerActor.transform.position;
+
+            // Tween to target position with an arc (jump) and then call the callback and destroy this placeable
+            transform.DOJump(targetPosition, 1f, 1, 0.5f).SetEase(Ease.OutQuad).OnComplete(() => {
+                callback();
+            });
+        }
+
+        [TargetRpc]
+        private void Rpc_AttackFinished(NetworkConnectionToClient target)
+        {
+            AttackFinishedEvent?.Invoke(this);
+        }
+
         // Client-side entry point: request attack check, provide callback
         [Client]
         public void RequestCanAttack(PlayerActor playerActor, Action<bool> callback)
@@ -82,13 +156,13 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
 
             canAttackCallback = callback;
 
-            CmdRequestCanAttack(playerActor);
+            Cmd_RequestCanAttack(playerActor);
         }
 
         [Client]
-        public void RequestTryAttack()
+        public void RequestAttack(PlayerActor playerActor)
         {
-            AttackFinishedEvent?.Invoke(this);
+            Cmd_Attack(playerActor);
         }
     }
 }

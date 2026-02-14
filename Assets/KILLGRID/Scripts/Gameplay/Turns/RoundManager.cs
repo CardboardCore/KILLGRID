@@ -54,5 +54,15 @@ namespace KILLGRID.Gameplay.Turns
         {
             return playerManager.GetPlayer(currentPlayer);
         }
+
+        /// <summary>
+        /// Gets the opponent player, based on the current player's turn. Assumes a 2-player game.
+        /// </summary>
+        /// <returns></returns>
+        [Server]
+        public PlayerActor GetOpponentPlayer()
+        {
+            return playerManager.GetPlayer((currentPlayer + 1) % playerManager.PlayerCount);
+        }
     }
 }

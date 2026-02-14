@@ -45,7 +45,7 @@ namespace KILLGRID.Actors.Players.PlayerActions.States
                         return;
                     }
 
-                    attackComponent.RequestTryAttack();
+                    attackComponent.RequestAttack(owningStateMachine.Owner);
                 });
             }
 

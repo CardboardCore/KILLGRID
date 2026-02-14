@@ -313,6 +313,10 @@ PrefabInstance:
       propertyPath: config.placeableType
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4967655959970432215, guid: a9f1143a7799ff84eb8f4750d6061125, type: 3}
+      propertyPath: attackConfig.attackType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6915428683782565726, guid: a9f1143a7799ff84eb8f4750d6061125, type: 3}
       propertyPath: m_Name
       value: RunnerPlaceableActor
