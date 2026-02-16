@@ -111,6 +111,7 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
 
                 case AttackType.JumpSuicide:
                     JumpToPlayer(opponentPlayerActor, () => {
+
                         playerHealthComponent.TakeDamage(attackConfig.AttackDamage);
                         Rpc_AttackFinished(playerActor.connectionToClient);
 
@@ -125,13 +126,25 @@ namespace KILLGRID.Actors.Placeables.PlaceableActorComponents
         {
             Owner.OccupyingTile.Cmd_RemoveActor();
 
-            // Animate this transform to the player's position, then call the callback and destroy this placeable
             Vector3 targetPosition = playerActor.transform.position;
 
-            // Tween to target position with an arc (jump) and then call the callback and destroy this placeable
-            transform.DOJump(targetPosition, 1f, 1, 0.5f).SetEase(Ease.OutQuad).OnComplete(() => {
+            // Tell all clients to play the jump animation
+            Rpc_PlayJumpAnimation(targetPosition);
+
+            // Also play the animation on the server (for host mode)
+            transform.DOJump(targetPosition, 1f, 1, 1.5f).SetEase(Ease.Linear).OnComplete(() => {
                 callback();
             });
+        }
+
+        [ClientRpc]
+        private void Rpc_PlayJumpAnimation(Vector3 targetPosition)
+        {
+            // Only play on clients, not on server (unless host mode)
+            if (!isServer)
+            {
+                transform.DOJump(targetPosition, 1f, 1, 1.5f).SetEase(Ease.Linear);
+            }
         }
 
         [TargetRpc]
